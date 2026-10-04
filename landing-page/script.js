@@ -12,63 +12,63 @@
       id: 'ironman',
       name: 'Iron Man',
       desc: 'A little arc-reactor energy.',
-      image: '../pets/ironman/sprite.png',
+      image: 'assets/pets/ironman.png',
       color: '#e35b4e'
     },
     {
       id: 'spiderman',
       name: 'Spider-Man',
       desc: 'The friendly neighborhood pal.',
-      image: '../pets/spiderman/sprite.png',
+      image: 'assets/pets/spiderman.png',
       color: '#d44c55'
     },
     {
       id: 'blue-snake',
       name: 'Blue Snake',
       desc: 'A bright little buddy for your desktop.',
-      image: '../pets/blue-snake/sprite.png',
+      image: 'assets/pets/blue-snake.png',
       color: '#3f9fce'
     },
     {
       id: 'black-cat',
       name: 'Black Cat',
       desc: 'A curious companion for your workday.',
-      image: '../pets/black-cat/sprite.png',
+      image: 'assets/pets/black-cat.png',
       color: '#707080'
     },
     {
       id: 'deadpool',
       name: 'Deadpool',
       desc: 'A companion with attitude.',
-      image: '../pets/deadpool/sprite.png',
+      image: 'assets/pets/deadpool.png',
       color: '#d84755'
     },
     {
       id: 'drstrange',
       name: 'Doctor Strange',
       desc: 'A little magic between tasks.',
-      image: '../pets/drstrange/sprite.png',
+      image: 'assets/pets/drstrange.png',
       color: '#8a63f0'
     },
     {
       id: 'wolverine',
       name: 'Wolverine',
       desc: 'Ready when you are.',
-      image: '../pets/wolverine/sprite.png',
+      image: 'assets/pets/wolverine.png',
       color: '#c79a48'
     },
     {
       id: 'deadcho',
       name: 'Deadcho',
       desc: 'A bright spark on your screen.',
-      image: '../pets/deadcho/sprite.png',
+      image: 'assets/pets/deadcho.png',
       color: '#e4a63d'
     },
     {
       id: 'marvel-deadpool',
       name: 'Deadpool',
       desc: 'The extra-expressive edition.',
-      image: '../pets/marvel-deadpool/sprite.png',
+      image: 'assets/pets/marvel-deadpool.png',
       color: '#df4757'
     }
   ];
