@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Kiko: a desktop pet for Windows</title>
-  <meta name="description" content="A tiny animated desktop friend for Windows. Walks, jumps, reminds you to drink water and take breaks. Fully offline.">
+  <meta name="description" content="Meet a tiny Windows desktop companion with custom hydration reminders, sticky notes, focus sessions, and playful pets. Private and saved on your PC.">
   <!-- Open Graph -->
   <meta property="og:title" content="Kiko: a desktop pet for Windows">
-  <meta property="og:description" content="A tiny animated desktop friend. Hydration reminders, pomodoro buddy, multiple pets. Offline, no account.">
+  <meta property="og:description" content="A tiny animated desktop friend with custom reminders, sticky notes, focus sessions, and multiple pets. Private, offline, no account.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/kiko.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -171,65 +171,78 @@
     <section class="section" id="features" aria-labelledby="features-title">
       <div class="container">
         <h2 id="features-title" class="section-title">What Kiko does.</h2>
+        <p class="section-sub">A small desktop companion, with the useful little tools built right in.</p>
 
-        <div class="bento">
-
-          <!-- 1. Hydration — large -->
-          <div class="glass bento-tile bento-tile--large">
-            <div class="bento-bubble-mock">
-              <div class="mock-bubble">Time for some water.</div>
-              <img class="mock-pet-art" src="assets/pets/ironman.png" alt="" aria-hidden="true">
-            </div>
+        <div class="feature-grid">
+          <article class="glass feature-card feature-card--reminders">
+            <span class="feature-icon" aria-hidden="true">💧</span>
             <h3>Hydration reminders</h3>
-            <p>Every hour by default. Change it to anything from 15 minutes to 2 hours. Pause whenever you like.</p>
-          </div>
-
-          <!-- 2. Walks — medium -->
-          <div class="glass bento-tile bento-tile--medium">
-            <div class="bento-sprite-loop" id="feature-walk-loop">
-              <img class="feature-pet-art" src="assets/pets/spiderman.png" alt="Spider-Man companion">
+            <p>Get a friendly speech-bubble nudge on your schedule. Choose an interval from 15 minutes to 2 hours, or pause reminders any time.</p>
+          </article>
+          <article class="glass feature-card feature-card--notes">
+            <span class="feature-icon" aria-hidden="true">✎</span>
+            <h3>Sticky Notes, one double-tap away</h3>
+            <p>Double-tap your desktop pet to open Notes. Keep up to 50 notes and let them autosave on your PC.</p>
+            <div class="feature-note-preview" aria-hidden="true">
+              <span>little things to remember</span>
+              <i></i><i></i>
             </div>
-            <h3>Walks, jumps and climbs</h3>
-            <p>Kiko wanders on its own. You decide how often and how high it jumps.</p>
-          </div>
-
-          <!-- 3. Focus — medium -->
-          <div class="glass bento-tile bento-tile--medium">
-            <div class="pomodoro-visual">
-              <div class="pomodoro-ring">
-                <span class="pomodoro-time">25</span>
-                <span class="pomodoro-label">focus</span>
-              </div>
-              <div class="pomodoro-ring pomodoro-ring--break">
-                <span class="pomodoro-time">5</span>
-                <span class="pomodoro-label">break</span>
-              </div>
-            </div>
-            <h3>Focus and breaks</h3>
-            <p>Run a focus session and Kiko keeps you company.</p>
-          </div>
-
-          <!-- 4. Streaks — small -->
-          <div class="glass bento-tile bento-tile--small">
-            <div class="outfit-chips">
+          </article>
+          <article class="glass feature-card feature-card--custom-message">
+            <span class="feature-icon" aria-hidden="true">✉</span>
+            <h3>Make reminders yours</h3>
+            <p>Write a custom reminder message up to 120 characters. Leave it blank to hear your pet’s own messages.</p>
+          </article>
+          <article class="glass feature-card feature-card--focus">
+            <span class="feature-icon" aria-hidden="true">🍅</span>
+            <h3>Focus sessions and breaks</h3>
+            <p>Start a Pomodoro session from the tray. Choose a 15, 25, 45, or 50-minute focus, then a 5, 10, or 15-minute break.</p>
+            <div class="feature-timer-preview" aria-hidden="true"><span>25 <small>FOCUS</small></span><b>→</b><span>5 <small>BREAK</small></span></div>
+          </article>
+          <article class="glass feature-card feature-card--movement">
+            <span class="feature-icon" aria-hidden="true">↗</span>
+            <h3>Wanders, jumps and climbs</h3>
+            <p>Let your companion explore the screen. Adjust how often it moves, set its jump height, or turn movement off.</p>
+          </article>
+          <article class="glass feature-card feature-card--spider">
+            <span class="feature-icon" aria-hidden="true">🕸</span>
+            <h3>A little Spider-Man magic</h3>
+            <p>Spider-Man hangs from a web. Pull and tilt him with your cursor, then watch him spring smoothly back to his spot.</p>
+          </article>
+          <article class="glass feature-card feature-card--pets">
+            <span class="feature-icon" aria-hidden="true">🐾</span>
+            <h3>Choose your companion</h3>
+            <p>Pick from the character collection in Settings or the tray menu. Switch pets whenever you feel like a change.</p>
+          </article>
+          <article class="glass feature-card feature-card--appearance">
+            <span class="feature-icon" aria-hidden="true">✦</span>
+            <h3>Make it feel like yours</h3>
+            <p>Adjust character size and animation speed, and keep Kiko above other windows when you want it close by.</p>
+          </article>
+          <article class="glass feature-card feature-card--streaks">
+            <span class="feature-icon" aria-hidden="true">🔥</span>
+            <h3>Daily streaks and outfits</h3>
+            <p>Build a daily-use streak to unlock the Shadow look after 3 days and Neon after 7.</p>
+            <div class="outfit-chips" aria-hidden="true">
               <span class="outfit-chip outfit-chip--shadow">Shadow · 3 days</span>
               <span class="outfit-chip outfit-chip--neon">Neon · 7 days</span>
             </div>
-            <h3>Streaks and looks</h3>
-            <p>Build a daily streak to unlock Shadow and Neon outfits.</p>
-          </div>
-
-          <!-- 5. Out of the way — small -->
-          <div class="glass bento-tile bento-tile--small">
-            <svg class="bento-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <path d="M6 16h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <path d="M16 6v20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-              <circle cx="16" cy="16" r="3" fill="currentColor"/>
-            </svg>
-            <h3>Stays out of the way</h3>
-            <p>Clicks pass through everywhere except the character. It never steals focus.</p>
-          </div>
-
+          </article>
+          <article class="glass feature-card feature-card--alerts">
+            <span class="feature-icon" aria-hidden="true">♫</span>
+            <h3>Your kind of reminder</h3>
+            <p>Turn the gentle chime on or off, and optionally show reminders as native Windows notifications too.</p>
+          </article>
+          <article class="glass feature-card feature-card--controls">
+            <span class="feature-icon" aria-hidden="true">⚙</span>
+            <h3>Quick controls, right where you need them</h3>
+            <p>Right-click Kiko to open Settings. Use the tray to pause reminders, hide the pet, choose a companion, or control movement and focus sessions.</p>
+          </article>
+          <article class="glass feature-card feature-card--startup">
+            <span class="feature-icon" aria-hidden="true">⏻</span>
+            <h3>Ready when your PC is</h3>
+            <p>Choose whether Kiko starts with Windows. Your preferences stay saved locally between sessions.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -259,7 +272,7 @@
             <span class="step-num">1</span>
             <div>
               <strong>Download the installer.</strong>
-              <p>Grab the latest version from GitHub Releases.</p>
+              <p>Get the Windows installer directly from this page.</p>
             </div>
           </li>
           <li>
@@ -273,7 +286,7 @@
             <span class="step-num">3</span>
             <div>
               <strong>Kiko appears on your desktop.</strong>
-              <p>Right-click the tray icon to choose a pet and set your reminders.</p>
+              <p>Right-click Kiko for Settings, or use its tray icon for quick controls.</p>
             </div>
           </li>
         </ol>
@@ -338,6 +351,14 @@
           <details class="glass faq-item">
             <summary>Can I change how often it reminds me?</summary>
             <p>Yes. The default is every hour, but you can set it anywhere from 15 minutes to 2 hours. You can also pause reminders entirely from the tray menu.</p>
+          </details>
+          <details class="glass faq-item">
+            <summary>Can I write my own reminder and keep sticky notes?</summary>
+            <p>Yes. Set a custom reminder message in Settings, then double-tap your pet to open Notes. Notes autosave on this PC.</p>
+          </details>
+          <details class="glass faq-item">
+            <summary>Can I change how my pet moves and looks?</summary>
+            <p>Yes. Settings lets you choose a pet, adjust its size and animation speed, and tune movement and jump height. Daily-use streaks unlock additional outfits.</p>
           </details>
           <details class="glass faq-item">
             <summary>Does it appear over full-screen apps and games?</summary>
