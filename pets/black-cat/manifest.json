@@ -1,0 +1,19 @@
+{
+  "id": "black-cat",
+  "name": "Black Cat",
+  "type": "illustration",
+  "animationType": "bounce",
+  "frameSize": [140, 160],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-bounce" },
+    "walking": { "fps": 8, "animation": "pet-walk-bounce" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "Your cat says: time for a little water break.",
+    "A sip of water will keep you feeling pawsitive!",
+    "Even curious cats need to stay hydrated."
+  ]
+}

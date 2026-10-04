@@ -1,8 +1,9 @@
-const { BrowserWindow, screen } = require('electron');
+const { BrowserWindow, Menu, screen } = require('electron');
 const path = require('path');
 const { pathToFileURL } = require('url');
 const settings = require('./settings');
 const petLoader = require('./petLoader');
+const settingsWindow = require('./settingsWindow');
 
 const BASE_W = 220;
 const BASE_H = 260;
@@ -51,6 +52,11 @@ function clampToWorkArea(x, y) {
   };
 }
 
+function positionAtTop(position) {
+  const display = screen.getDisplayMatching({ ...position, ...size });
+  return clampToWorkArea(position.x, display.workArea.y);
+}
+
 // only used at startup / when displays change
 function resolveStartPosition(saved) {
   if (!saved || !isVisibleOnAnyDisplay({ x: saved.x, y: saved.y, ...size })) {
@@ -73,7 +79,8 @@ function createPetWindow() {
 
   const cfg = settings.get();
   size = sizeForScale(cfg.scale);
-  const pos = resolveStartPosition(cfg.position);
+  const savedPos = resolveStartPosition(cfg.position);
+  const pos = cfg.petId === 'spiderman' ? positionAtTop(savedPos) : savedPos;
   const onTop = cfg.alwaysOnTop !== false;
 
   petWin = new BrowserWindow({
@@ -88,6 +95,7 @@ function createPetWindow() {
     fullscreenable: false,
     skipTaskbar: true,
     focusable: false,
+    icon: path.join(__dirname, '../../assets/kiko.ico'),
     alwaysOnTop: onTop,
     show: false,
     webPreferences: {
@@ -105,6 +113,17 @@ function createPetWindow() {
   // security
   petWin.webContents.on('will-navigate', (e) => e.preventDefault());
   petWin.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+  petWin.webContents.on('context-menu', (event) => {
+    event.preventDefault();
+    if (!alive()) return;
+
+    Menu.buildFromTemplate([
+      {
+        label: 'Open Settings...',
+        click: () => settingsWindow.openSettingsWindow()
+      }
+    ]).popup({ window: petWin });
+  });
 
   petWin.loadFile(path.join(__dirname, '../renderer/pet/pet.html'));
 
@@ -135,11 +154,20 @@ function sendCurrentPetToRenderer() {
   const pet = petLoader.getPetById(cfg.petId);
   if (!pet) return;
 
+  if (cfg.petId === 'spiderman') {
+    const bounds = petWin.getBounds();
+    const topPosition = positionAtTop(bounds);
+    if (bounds.y !== topPosition.y) {
+      petWin.setBounds({ ...topPosition, ...size });
+    }
+  }
+
   petWin.webContents.send('set-pet', {
     manifest: pet.manifest,
     imageUrl: pathToFileURL(pet.imagePath).href,
     scale: cfg.scale || 1.0,
-    speed: cfg.animationSpeed || 1.0
+    speed: cfg.animationSpeed || 1.0,
+    outfit: cfg.selectedOutfit || 'classic'
   });
   const bounds = petWin.getBounds();
   const display = screen.getDisplayMatching(bounds);

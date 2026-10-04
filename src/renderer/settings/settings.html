@@ -9,130 +9,225 @@
 </head>
 <body>
   <div class="settings-container">
-    <!-- Header -->
     <header class="settings-header">
       <div class="header-title">
-        <span class="icon">🕷️</span>
+        <div class="brand-mark">
+          <img src="../../../assets/kiko.png" alt="Kiko logo">
+        </div>
         <div>
-          <h2>Kiko Settings</h2>
-          <p class="subtitle">Customize Kiko and its reminders</p>
+          <h2>Kiko</h2>
+          <p class="subtitle">Settings for your desktop companion</p>
         </div>
       </div>
     </header>
 
-    <!-- Tabs Header -->
     <nav class="tabs-nav">
       <button class="tab-btn active" data-tab="general">General</button>
       <button class="tab-btn" data-tab="reminder">Reminder</button>
       <button class="tab-btn" data-tab="appearance">Appearance</button>
     </nav>
 
-    <!-- Tab Contents -->
     <main class="tabs-body">
-      <!-- General Tab -->
+      <!-- General -->
       <section id="tab-general" class="tab-panel active">
         <div class="setting-group">
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Start with Windows</span>
-              <span class="label-desc">Launch companion automatically when PC boots</span>
-            </div>
-            <input type="checkbox" id="startWithWindows" class="toggle-switch">
-          </label>
+          <div class="section-heading">System</div>
+          <div class="group">
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Start with Windows</span>
+                <span class="label-desc">Launch Kiko automatically when your PC starts</span>
+              </div>
+              <input type="checkbox" id="startWithWindows" class="toggle-switch">
+            </label>
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Always on top</span>
+                <span class="label-desc">Keep Kiko above your other windows</span>
+              </div>
+              <input type="checkbox" id="alwaysOnTop" class="toggle-switch">
+            </label>
+          </div>
 
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Always on Top</span>
-              <span class="label-desc">Keep your pet floating above all application windows</span>
-            </div>
-            <input type="checkbox" id="alwaysOnTop" class="toggle-switch">
-          </label>
+          <div class="section-heading">Movement</div>
+          <div class="group">
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Walking and movement</span>
+                <span class="label-desc">Let Kiko roam, jump and explore the whole screen</span>
+              </div>
+              <input type="checkbox" id="movementEnabled" class="toggle-switch">
+            </label>
 
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Walking & Movement</span>
-              <span class="label-desc">Allow character to wander along the bottom of the screen</span>
+            <div class="slider-control">
+              <div class="slider-header">
+                <span class="label-title">Movement frequency</span>
+                <span id="movement-frequency-value" class="slider-badge">25 sec</span>
+              </div>
+              <input type="range" id="movementFrequency" min="10" max="60" step="5" value="25" class="range-slider">
             </div>
-            <input type="checkbox" id="movementEnabled" class="toggle-switch">
-          </label>
+
+            <div class="slider-control">
+              <div class="slider-header">
+                <span class="label-title">Jump height</span>
+                <span id="jump-height-value" class="slider-badge">54 px</span>
+              </div>
+              <input type="range" id="jumpHeight" min="0" max="100" step="10" value="50" class="range-slider">
+              <span class="label-desc">Set to 0 to turn jumps off.</span>
+            </div>
+
+            <div class="form-row">
+              <div class="toggle-info">
+                <span class="label-title">Spider-Man climbing</span>
+                <span class="label-desc">Climb to the top every...</span>
+              </div>
+              <select id="climbEveryWalks" class="select-input">
+                <option value="1">1 walk</option>
+                <option value="2">2 walks</option>
+                <option value="3">3 walks</option>
+                <option value="5">5 walks</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="section-heading">Focus and breaks</div>
+          <div class="group">
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Pomodoro buddy</span>
+                <span class="label-desc">Run focus and break sessions with Kiko</span>
+              </div>
+              <input type="checkbox" id="pomodoroEnabled" class="toggle-switch">
+            </label>
+            <div class="form-row">
+              <div class="toggle-info">
+                <span class="label-title">Focus duration</span>
+              </div>
+              <select id="pomodoroFocusMinutes" class="select-input">
+                <option value="15">15 minutes</option>
+                <option value="25">25 minutes</option>
+                <option value="45">45 minutes</option>
+                <option value="50">50 minutes</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="toggle-info">
+                <span class="label-title">Break duration</span>
+              </div>
+              <select id="pomodoroBreakMinutes" class="select-input">
+                <option value="5">5 minutes</option>
+                <option value="10">10 minutes</option>
+                <option value="15">15 minutes</option>
+              </select>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Reminder Tab -->
+      <!-- Reminder -->
       <section id="tab-reminder" class="tab-panel">
         <div class="setting-group">
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Hydration Reminder</span>
-              <span class="label-desc">Show speech bubble reminder to drink water</span>
+          <div class="group">
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Hydration reminder</span>
+                <span class="label-desc">Kiko reminds you to drink water in a speech bubble</span>
+              </div>
+              <input type="checkbox" id="reminderEnabled" class="toggle-switch">
+            </label>
+            <div class="form-row">
+              <div class="toggle-info">
+                <span class="label-title">Reminder interval</span>
+                <span class="label-desc">Time between reminders</span>
+              </div>
+              <select id="intervalMinutes" class="select-input">
+                <option value="15">Every 15 minutes</option>
+                <option value="30">Every 30 minutes</option>
+                <option value="45">Every 45 minutes</option>
+                <option value="60">Every hour</option>
+                <option value="90">Every 90 minutes</option>
+                <option value="120">Every 2 hours</option>
+              </select>
             </div>
-            <input type="checkbox" id="reminderEnabled" class="toggle-switch">
-          </label>
-
-          <div class="form-row">
-            <div class="toggle-info">
-              <span class="label-title">Reminder Interval</span>
-              <span class="label-desc">Time duration between hydration alerts</span>
+            <div class="custom-message-card">
+              <label class="label-title" for="customReminderMessage">Your reminder message</label>
+              <span class="label-desc">Kiko will use this message for every water reminder. Leave it empty to use your pet’s messages.</span>
+              <textarea id="customReminderMessage" class="custom-message-input" maxlength="120" rows="3" placeholder="Take a little water break — you’ve got this!"></textarea>
+              <div class="custom-message-footer">
+                <span id="custom-message-status" class="label-desc" aria-live="polite">Saved on this PC</span>
+                <span id="custom-message-count" class="label-desc">0 / 120</span>
+              </div>
+              <div class="reminder-preview">
+                <span class="reminder-preview-label">PREVIEW</span>
+                <div class="reminder-preview-bubble" id="custom-message-preview">Your reminder will appear in Kiko’s speech bubble.</div>
+              </div>
             </div>
-            <select id="intervalMinutes" class="select-input">
-              <option value="15">Every 15 Minutes</option>
-              <option value="30">Every 30 Minutes</option>
-              <option value="45">Every 45 Minutes</option>
-              <option value="60">Every 60 Minutes (1 Hour)</option>
-              <option value="90">Every 90 Minutes</option>
-              <option value="120">Every 120 Minutes (2 Hours)</option>
-            </select>
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Sound</span>
+                <span class="label-desc">Play a soft chime with each reminder</span>
+              </div>
+              <input type="checkbox" id="sound" class="toggle-switch">
+            </label>
+            <label class="toggle-card">
+              <div class="toggle-info">
+                <span class="label-title">Windows notification</span>
+                <span class="label-desc">Also show a native Windows banner</span>
+              </div>
+              <input type="checkbox" id="notification" class="toggle-switch">
+            </label>
           </div>
-
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Sound Chime</span>
-              <span class="label-desc">Play soft notification chime on reminder</span>
-            </div>
-            <input type="checkbox" id="sound" class="toggle-switch">
-          </label>
-
-          <label class="toggle-card">
-            <div class="toggle-info">
-              <span class="label-title">Windows Notification</span>
-              <span class="label-desc">Display native Windows popup banner</span>
-            </div>
-            <input type="checkbox" id="notification" class="toggle-switch">
-          </label>
         </div>
       </section>
 
-      <!-- Appearance Tab -->
+      <!-- Appearance -->
       <section id="tab-appearance" class="tab-panel">
         <div class="setting-group">
-          <span class="section-heading">Choose Your Character</span>
-          <div id="pets-grid" class="pets-grid">
-            <!-- Dynamically populated character cards -->
+          <div class="streak-card">
+            <svg class="streak-icon" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+              <defs>
+                <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffb347"/>
+                  <stop offset="1" stop-color="#ff4560"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#flame)" d="M12 2c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3.2 2-4.2.2 1.4 1 2 1.8 2.2C10.5 7.5 11 5 12 2z"/>
+            </svg>
+            <div>
+              <span class="label-title"><span id="daily-streak">0</span>-day streak</span>
+              <span class="label-desc">Use Kiko daily to unlock Shadow at 3 days and Neon at 7.</span>
+            </div>
           </div>
 
-          <div class="slider-control">
-            <div class="slider-header">
-              <span class="label-title">Character Scale</span>
-              <span id="scale-value" class="slider-badge">1.0x</span>
-            </div>
-            <input type="range" id="scale" min="0.7" max="1.5" step="0.05" value="1.0" class="range-slider">
-          </div>
+          <div class="section-heading">Looks</div>
+          <div id="outfits-grid" class="outfits-grid"></div>
 
-          <div class="slider-control">
-            <div class="slider-header">
-              <span class="label-title">Animation Speed</span>
-              <span id="speed-value" class="slider-badge">1.0x</span>
+          <div class="section-heading">Character</div>
+          <div id="pets-grid" class="pets-grid"></div>
+
+          <div class="group">
+            <div class="slider-control">
+              <div class="slider-header">
+                <span class="label-title">Character size</span>
+                <span id="scale-value" class="slider-badge">1.0x</span>
+              </div>
+              <input type="range" id="scale" min="0.7" max="1.5" step="0.05" value="1.0" class="range-slider">
             </div>
-            <input type="range" id="animationSpeed" min="0.5" max="2.0" step="0.1" value="1.0" class="range-slider">
+            <div class="slider-control">
+              <div class="slider-header">
+                <span class="label-title">Animation speed</span>
+                <span id="speed-value" class="slider-badge">1.0x</span>
+              </div>
+              <input type="range" id="animationSpeed" min="0.5" max="2.0" step="0.1" value="1.0" class="range-slider">
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="settings-footer">
       <div id="save-status" class="save-status">Saved</div>
-      <button id="close-btn" class="btn btn-secondary">Done</button>
+      <button id="close-btn" class="btn btn-primary">Done</button>
     </footer>
   </div>
 

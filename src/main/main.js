@@ -3,9 +3,11 @@ const settings = require('./settings');
 const petLoader = require('./petLoader');
 const petWindow = require('./petWindow');
 const movement = require('./movement');
+const pomodoro = require('./pomodoro');
 const reminder = require('./reminder');
 const tray = require('./tray');
 const ipc = require('./ipc');
+const settingsWindow = require('./settingsWindow');
 
 // Single-instance lock
 const gotTheLock = app.requestSingleInstanceLock();
@@ -28,6 +30,7 @@ if (!gotTheLock) {
 
     // 1. Load persisted settings
     settings.loadSettings();
+    const isFirstRun = settings.wasFirstRun();
 
     // 2. Scan available pets in /pets directory
     petLoader.loadAllPets();
@@ -38,12 +41,14 @@ if (!gotTheLock) {
     // 4. Create the main transparent Pet Window
     petWindow.createPetWindow();
 
-    // 5. Initialize System Tray
+    // 5. Initialize the system tray and show onboarding on a fresh install.
     tray.createTray();
+    if (isFirstRun) settingsWindow.openSettingsWindow();
 
     // 6. Schedule hydration reminders & power monitor listeners
     reminder.scheduleNextReminder();
     reminder.initPowerMonitor();
+    pomodoro.startSavedSession();
 
     console.log('[Main] App initialization complete.');
   });
@@ -56,6 +61,7 @@ if (!gotTheLock) {
   app.on('before-quit', () => {
     console.log('[Main] Cleaning up before quit...');
     movement.stopWalking();
+    pomodoro.shutdown();
     reminder.pause();
     tray.destroyTray();
     settings.saveSettingsSync();

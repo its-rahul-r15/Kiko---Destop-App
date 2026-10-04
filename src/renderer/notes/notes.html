@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiko Notes</title>
+  <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+  <main class="notes-app">
+    <header class="notes-header">
+      <div class="notes-brand">
+        <img src="../../../assets/kiko.png" alt="" class="notes-brand-icon">
+        <div>
+          <h1>Your notes</h1>
+          <p>Little thoughts, saved on this PC.</p>
+        </div>
+      </div>
+      <div class="notes-actions">
+        <span id="save-status" class="save-status" role="status" aria-live="polite">All changes saved</span>
+        <button id="new-note" class="new-note-button" type="button">＋ <span>New note</span></button>
+        <button id="close-window" class="close-button" type="button" aria-label="Close notes">×</button>
+      </div>
+    </header>
+    <section id="notes-board" class="notes-board" aria-label="Your sticky notes"></section>
+    <template id="note-template">
+      <article class="note-card">
+        <header class="note-card-header">
+          <span class="note-marker" aria-hidden="true"></span>
+          <input class="note-title" type="text" maxlength="80" placeholder="Untitled note" aria-label="Note title">
+          <button class="delete-note" type="button" aria-label="Delete note" title="Delete note">×</button>
+        </header>
+        <textarea class="note-content" maxlength="5000" placeholder="Type a thought, a reminder, or anything you want to keep..." aria-label="Note"></textarea>
+        <footer class="note-card-footer">Auto-saved on this PC</footer>
+      </article>
+    </template>
+  </main>
+  <script src="notes.js"></script>
+</body>
+</html>

@@ -11,12 +11,12 @@ function openSettingsWindow() {
   }
 
   settingsWin = new BrowserWindow({
-    width: 540,
-    height: 640,
+    width: 580,
+    height: 760,
     resizable: false,
     maximizable: false,
     title: 'Kiko Settings',
-    icon: path.join(__dirname, '../../assets/tray.ico'),
+    icon: path.join(__dirname, '../../assets/kiko.ico'),
     webPreferences: {
       preload: path.join(__dirname, '../preload/settingsPreload.js'),
       contextIsolation: true,

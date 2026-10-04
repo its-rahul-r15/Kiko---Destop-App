@@ -43,13 +43,16 @@ function triggerReminder() {
     ? pet.manifest.messages
     : ["💧 It's time to drink some water! Stay hydrated! 💧"];
 
-  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  const customMessage = typeof currentSettings.customReminderMessage === 'string'
+    ? currentSettings.customReminderMessage.trim()
+    : '';
+  const reminderMessage = customMessage || messages[Math.floor(Math.random() * messages.length)];
 
   // 1. Send IPC to Pet Renderer
   const win = petWindow.getPetWindow();
   if (win && !win.isDestroyed()) {
     win.webContents.send('show-reminder', {
-      message: randomMessage,
+      message: reminderMessage,
       sound: currentSettings.sound !== false
     });
   }
@@ -59,8 +62,8 @@ function triggerReminder() {
     try {
       const notif = new Notification({
         title: pet ? pet.name : 'Kiko Reminder',
-        body: randomMessage,
-        icon: path.join(__dirname, '../../assets/tray.ico'),
+        body: reminderMessage,
+        icon: path.join(__dirname, '../../assets/kiko.png'),
         silent: true // Pet renderer plays the custom sound if enabled
       });
       notif.show();

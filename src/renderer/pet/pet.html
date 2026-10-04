@@ -14,8 +14,10 @@
       <div id="bubble-text">Hey there! It's time to drink water 💧</div>
     </div>
 
+    <span id="spider-web" aria-hidden="true"></span>
+
     <!-- Character Sprite / Illustration Container -->
-    <div id="pet-container" class="state-idle">
+    <div id="pet-container" class="state-idle" role="button" tabindex="0" aria-label="Kiko, click for a reaction">
       <img id="pet-image" alt="Pet Character" draggable="false">
       <div id="sleep-zzz" class="zzz-hidden">
         <span class="z1">Z</span>
@@ -23,6 +25,7 @@
         <span class="z3">z</span>
       </div>
     </div>
+    <div id="pomodoro-badge" class="pomodoro-hidden" aria-live="polite"></div>
   </div>
 
   <audio id="reminder-audio" preload="auto"></audio>

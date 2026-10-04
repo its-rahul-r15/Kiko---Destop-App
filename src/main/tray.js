@@ -3,6 +3,8 @@ const path = require('path');
 const settings = require('./settings');
 const petLoader = require('./petLoader');
 const petWindow = require('./petWindow');
+const movement = require('./movement');
+const pomodoro = require('./pomodoro');
 const reminder = require('./reminder');
 const settingsWindow = require('./settingsWindow');
 
@@ -10,7 +12,7 @@ let tray = null;
 let isPetHidden = false;
 
 function getTrayIconPath() {
-  return path.join(__dirname, '../../assets/tray.ico');
+  return path.join(__dirname, '../../assets/kiko.ico');
 }
 
 function updateTrayMenu() {
@@ -78,10 +80,22 @@ function updateTrayMenu() {
       checked: currentSettings.movementEnabled !== false,
       click: (menuItem) => {
         settings.set({ movementEnabled: menuItem.checked });
+        if (!menuItem.checked) movement.stopWalking();
         const win = petWindow.getPetWindow();
         if (win && !win.isDestroyed()) {
-          win.webContents.send('set-movement', { enabled: menuItem.checked });
+          win.webContents.send('set-movement', {
+            enabled: menuItem.checked,
+            intervalSeconds: currentSettings.movementIntervalSeconds
+          });
         }
+      }
+    },
+    {
+      label: currentSettings.pomodoroEnabled ? '⏹ Stop Pomodoro' : '🍅 Start Pomodoro',
+      click: () => {
+        if (settings.get('pomodoroEnabled')) pomodoro.stop();
+        else pomodoro.start();
+        updateTrayMenu();
       }
     },
     {

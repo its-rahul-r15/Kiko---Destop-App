@@ -38,6 +38,74 @@ body, html {
   padding-bottom: 0;
 }
 
+#pet-root.pet-spiderman {
+  justify-content: flex-start;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#spider-web {
+  display: none;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: calc(64px + var(--spider-pull, 0px));
+  transform: translateX(-50%) rotate(var(--spider-angle, 0deg));
+  transform-origin: top center;
+  transition: height 720ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(225, 237, 255, 0.95), rgba(174, 201, 239, 0.58));
+  box-shadow: 0 0 4px rgba(210, 229, 255, 0.38);
+  pointer-events: none;
+}
+
+#pet-root.pet-spiderman #spider-web {
+  display: block;
+}
+
+#pet-root.pet-spiderman #pet-container {
+  z-index: 1;
+  transform-origin: center top;
+}
+
+#pet-root.pet-spiderman.spider-moving #pet-container {
+  animation: none !important;
+  transform: translateY(var(--spider-pull, 0px)) rotate(var(--spider-angle, 0deg));
+  transition: none;
+}
+
+#pet-root.pet-spiderman.spider-moving #pet-container {
+  cursor: grabbing;
+}
+
+#pet-root.pet-spiderman.spider-moving #spider-web {
+  transition: none;
+}
+
+#pet-root.outfit-shadow #pet-image {
+  filter: grayscale(0.8) brightness(0.72) contrast(1.2) drop-shadow(0 0 9px rgba(148, 163, 184, 0.45));
+}
+
+#pet-root.outfit-neon #pet-image {
+  filter: saturate(1.9) hue-rotate(38deg) drop-shadow(0 0 12px rgba(56, 189, 248, 0.65));
+}
+
+#pet-container.facing-left #pet-image {
+  transform: scaleX(-1) scale(var(--scale));
+}
+
+#pet-root.pet-spiderman #pet-image {
+  max-width: 190px;
+  max-height: 120px;
+  transform: rotate(90deg) scale(var(--scale));
+}
+
+#pet-root.pet-spiderman #pet-container.facing-left #pet-image {
+  transform: rotate(-90deg) scale(var(--scale));
+}
+
 /* ==================== Speech Bubble ==================== */
 #speech-bubble {
   position: absolute;
@@ -111,6 +179,17 @@ body, html {
   transform: scale(var(--scale));
   transition: transform 0.2s ease;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
+.reaction-playful #pet-image {
+  animation: playfulReaction 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes playfulReaction {
+  0% { transform: scale(var(--scale)) translateY(0) rotate(0); }
+  45% { transform: scale(var(--scale)) translateY(-28px) rotate(-8deg); }
+  75% { transform: scale(var(--scale)) translateY(0) rotate(6deg); }
+  100% { transform: scale(var(--scale)) translateY(0) rotate(0); }
 }
 
 .flipped {
@@ -278,6 +357,62 @@ body, html {
   100% {
     transform: scale(1) translateY(2px);
   }
+}
+
+#pet-root.pomodoro-focus #pet-container {
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
+}
+
+#pet-root.pomodoro-break #pet-container {
+  filter: drop-shadow(0 0 10px rgba(74, 222, 128, 0.42));
+}
+
+#pet-root.pomodoro-focus #pet-container::after,
+#pet-root.pomodoro-break #pet-container::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 1px solid transparent;
+  border-radius: 38%;
+  pointer-events: none;
+}
+
+#pet-root.pomodoro-focus #pet-container::after {
+  border-color: rgba(56, 189, 248, 0.42);
+  animation: focusHalo 2.2s ease-in-out infinite;
+}
+
+#pet-root.pomodoro-break #pet-container::after {
+  border-color: rgba(74, 222, 128, 0.42);
+  animation: breakHalo 3.4s ease-in-out infinite;
+}
+
+@keyframes focusHalo {
+  0%, 100% { opacity: 0.35; transform: scale(0.94); box-shadow: 0 0 4px rgba(56, 189, 248, 0.2); }
+  50% { opacity: 0.9; transform: scale(1.06); box-shadow: 0 0 16px rgba(56, 189, 248, 0.45); }
+}
+
+@keyframes breakHalo {
+  0%, 100% { opacity: 0.3; transform: scale(0.98); box-shadow: 0 0 5px rgba(74, 222, 128, 0.2); }
+  50% { opacity: 0.75; transform: scale(1.1); box-shadow: 0 0 18px rgba(74, 222, 128, 0.48); }
+}
+
+#pomodoro-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 110;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.86);
+  color: #e2e8f0;
+  font: 600 10px/1.2 var(--font-stack);
+  pointer-events: none;
+}
+
+#pomodoro-badge.pomodoro-hidden {
+  display: none;
 }
 
 /* ==================== Sleep ZZZ Indicators ==================== */

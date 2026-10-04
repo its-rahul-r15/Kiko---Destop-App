@@ -58,7 +58,7 @@ kiko-desktop-pet/
 │       ├── manifest.json
 │       └── sheet.png
 └── assets/
-    ├── tray.ico
+    ├── kiko.ico
     └── water.wav
 ```
 
@@ -276,7 +276,7 @@ Validate every payload in `ipc.js`. No raw `ipcRenderer` exposure.
 
 - `electron-builder.yml`: targets `nsis` (per-user install, `oneClick: true`) and `portable`, `x64` only, `asar: true`.
 - Exclude dev files and unused locales (`electronLanguages: ["en-US"]`).
-- Output name: `SpiderManPet`.
+- Output name: `Kiko`.
 - Expected size ~80–100 MB (Electron baseline).
 
 ## 18. MVP Scope

@@ -1,0 +1,19 @@
+{
+  "id": "blue-snake",
+  "name": "Blue Snake",
+  "type": "illustration",
+  "animationType": "bounce",
+  "frameSize": [140, 160],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-bounce" },
+    "walking": { "fps": 8, "animation": "pet-walk-bounce" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "This little snake needs a water break too!",
+    "Stay hydrated and keep your day moving!",
+    "A sip of water is a great way to reset."
+  ]
+}

@@ -4,9 +4,42 @@ const settings = require('./settings');
 const petLoader = require('./petLoader');
 const petWindow = require('./petWindow');
 const movement = require('./movement');
+const pomodoro = require('./pomodoro');
 const reminder = require('./reminder');
 const tray = require('./tray');
 const settingsWindow = require('./settingsWindow');
+const notesStore = require('./notesStore');
+const notesWindow = require('./notesWindow');
+
+function validateNotes(value) {
+  if (!Array.isArray(value) || value.length > 50) {
+    throw new Error('Notes must be a list of up to 50 items.');
+  }
+
+  const ids = new Set();
+  return value.map((note) => {
+    if (!note || typeof note !== 'object' || Array.isArray(note)) {
+      throw new Error('Each note must be an object.');
+    }
+    if (typeof note.id !== 'string' || !/^[\w-]{1,64}$/.test(note.id) || ids.has(note.id)) {
+      throw new Error('Each note must have a unique, valid ID.');
+    }
+    if (typeof note.title !== 'string' || note.title.length > 80) {
+      throw new Error('Note titles must be 80 characters or fewer.');
+    }
+    if (typeof note.content !== 'string' || note.content.length > 5000) {
+      throw new Error('Note text must be 5,000 characters or fewer.');
+    }
+    ids.add(note.id);
+    return { id: note.id, title: note.title, content: note.content };
+  });
+}
+
+function requireNotesWindow(event) {
+  if (!notesWindow.isNotesWindowSender(event.sender)) {
+    throw new Error('Notes can only be accessed from the Notes window.');
+  }
+}
 
 function registerIpcHandlers() {
   // Renderer to Main: Pet Interaction
@@ -30,6 +63,15 @@ function registerIpcHandlers() {
 
   ipcMain.on('walk-stop', () => {
     movement.stopWalking();
+  });
+
+  ipcMain.on('open-notes-window', (event) => {
+    const petWin = petWindow.getPetWindow();
+    if (!petWin || petWin.isDestroyed() || petWin.webContents !== event.sender) {
+      console.error('[IPC] Ignored an open-notes request from an untrusted window.');
+      return;
+    }
+    notesWindow.openNotesWindow();
   });
 
   ipcMain.handle('get-pet-initial-state', () => {
@@ -58,44 +100,155 @@ function registerIpcHandlers() {
     }));
   });
 
+  ipcMain.handle('get-notes', (event) => {
+    requireNotesWindow(event);
+    return validateNotes(notesStore.loadNotes());
+  });
+
+  ipcMain.handle('save-notes', (event, value) => {
+    requireNotesWindow(event);
+    return { success: true, notes: notesStore.saveNotes(validateNotes(value)) };
+  });
+
+  ipcMain.on('save-notes-before-close', (event, value) => {
+    if (!notesWindow.isNotesWindowSender(event.sender)) {
+      console.error('[IPC] Ignored a notes save request from an untrusted window.');
+      event.returnValue = { success: false, error: 'Untrusted notes window.' };
+      return;
+    }
+    try {
+      notesStore.saveNotes(validateNotes(value));
+      event.returnValue = { success: true };
+    } catch (error) {
+      console.error('[IPC] Failed to save notes before closing:', error);
+      event.returnValue = { success: false, error: error.message };
+    }
+  });
+
+  ipcMain.on('close-notes-window', (event) => {
+    if (notesWindow.isNotesWindowSender(event.sender)) {
+      notesWindow.closeNotesWindow();
+    }
+  });
+
   ipcMain.handle('update-settings', (event, newSettings) => {
     if (!newSettings || typeof newSettings !== 'object') {
       return { success: false, error: 'Invalid payload' };
     }
 
     const previous = settings.get();
-    const updated = settings.set(newSettings);
+    if (newSettings.selectedOutfit !== undefined) {
+      const allowedOutfits = ['classic', 'shadow', 'neon'];
+      if (!allowedOutfits.includes(newSettings.selectedOutfit)
+        || !Array.isArray(previous.unlockedOutfits)
+        || !previous.unlockedOutfits.includes(newSettings.selectedOutfit)) {
+        return { success: false, error: 'That look is not unlocked yet' };
+      }
+    }
+    const boundedSettings = { ...newSettings };
+    if (boundedSettings.customReminderMessage !== undefined) {
+      if (typeof boundedSettings.customReminderMessage !== 'string') {
+        return { success: false, error: 'Reminder message must be text' };
+      }
+      boundedSettings.customReminderMessage = boundedSettings.customReminderMessage.trim();
+      if (boundedSettings.customReminderMessage.length > 120) {
+        return { success: false, error: 'Reminder message must be 120 characters or fewer' };
+      }
+    }
+    if (boundedSettings.movementIntervalSeconds !== undefined) {
+      const value = Number(boundedSettings.movementIntervalSeconds);
+      if (!Number.isFinite(value)) return { success: false, error: 'Invalid movement interval' };
+      boundedSettings.movementIntervalSeconds = Math.max(10, Math.min(Math.round(value), 60));
+    }
+    if (boundedSettings.jumpHeight !== undefined) {
+      const value = Number(boundedSettings.jumpHeight);
+      if (!Number.isFinite(value)) return { success: false, error: 'Invalid jump height' };
+      boundedSettings.jumpHeight = Math.max(0, Math.min(Math.round(value), 100));
+    }
+    if (boundedSettings.climbEveryWalks !== undefined) {
+      const value = Number(boundedSettings.climbEveryWalks);
+      if (![1, 2, 3, 5].includes(value)) return { success: false, error: 'Invalid climbing frequency' };
+      boundedSettings.climbEveryWalks = value;
+    }
+    for (const [key, allowedValues] of [
+      ['pomodoroFocusMinutes', [15, 25, 45, 50]],
+      ['pomodoroBreakMinutes', [5, 10, 15]]
+    ]) {
+      if (boundedSettings[key] === undefined) continue;
+      const value = Number(boundedSettings[key]);
+      if (!allowedValues.includes(value)) return { success: false, error: `Invalid ${key}` };
+      boundedSettings[key] = value;
+    }
+    const updated = settings.set(boundedSettings);
 
     // Apply side effects
-    if (newSettings.startWithWindows !== undefined) {
+    if (boundedSettings.startWithWindows !== undefined) {
       try {
         app.setLoginItemSettings({
-          openAtLogin: Boolean(newSettings.startWithWindows)
+          openAtLogin: Boolean(boundedSettings.startWithWindows)
         });
       } catch (err) {
         console.error('[IPC] Failed to set login item settings:', err);
       }
     }
 
-    if (newSettings.alwaysOnTop !== undefined) {
-      petWindow.setAlwaysOnTop(Boolean(newSettings.alwaysOnTop));
+    if (boundedSettings.alwaysOnTop !== undefined) {
+      petWindow.setAlwaysOnTop(Boolean(boundedSettings.alwaysOnTop));
     }
 
-    if (newSettings.petId !== undefined && newSettings.petId !== previous.petId) {
+    if (boundedSettings.petId !== undefined && boundedSettings.petId !== previous.petId) {
+      petWindow.sendCurrentPetToRenderer();
+    }
+    if (boundedSettings.selectedOutfit !== undefined && boundedSettings.selectedOutfit !== previous.selectedOutfit) {
       petWindow.sendCurrentPetToRenderer();
     }
 
-    if (newSettings.scale !== undefined && newSettings.scale !== previous.scale) {
-      petWindow.applyScale(newSettings.scale);
-    } else if (newSettings.animationSpeed !== undefined) {
+    if (boundedSettings.scale !== undefined && boundedSettings.scale !== previous.scale) {
+      petWindow.applyScale(boundedSettings.scale);
+    } else if (boundedSettings.animationSpeed !== undefined) {
       petWindow.sendCurrentPetToRenderer();
     }
 
-    if (newSettings.intervalMinutes !== undefined && newSettings.intervalMinutes !== previous.intervalMinutes) {
+    if (boundedSettings.intervalMinutes !== undefined && boundedSettings.intervalMinutes !== previous.intervalMinutes) {
       reminder.resetInterval();
     }
 
-    if (newSettings.reminderEnabled !== undefined || newSettings.paused !== undefined) {
+    if (boundedSettings.movementEnabled !== undefined && boundedSettings.movementEnabled !== previous.movementEnabled) {
+      if (!updated.movementEnabled) movement.stopWalking();
+      const win = petWindow.getPetWindow();
+      if (win && !win.isDestroyed()) {
+        win.webContents.send('set-movement', {
+          enabled: Boolean(updated.movementEnabled),
+          intervalSeconds: updated.movementIntervalSeconds
+        });
+      }
+    } else if (
+      boundedSettings.movementIntervalSeconds !== undefined
+      || boundedSettings.jumpHeight !== undefined
+      || boundedSettings.climbEveryWalks !== undefined
+    ) {
+      const win = petWindow.getPetWindow();
+      if (win && !win.isDestroyed()) {
+        win.webContents.send('set-movement', {
+          enabled: updated.movementEnabled !== false,
+          intervalSeconds: updated.movementIntervalSeconds
+        });
+      }
+    }
+
+    if (boundedSettings.pomodoroEnabled !== undefined && boundedSettings.pomodoroEnabled !== previous.pomodoroEnabled) {
+      if (updated.pomodoroEnabled) pomodoro.start();
+      else pomodoro.stop();
+    } else if (updated.pomodoroEnabled) {
+      const activeDurationKey = updated.pomodoroPhase === 'break'
+        ? 'pomodoroBreakMinutes'
+        : 'pomodoroFocusMinutes';
+      if (boundedSettings[activeDurationKey] !== undefined) {
+        pomodoro.restartCurrentPhase();
+      }
+    }
+
+    if (boundedSettings.reminderEnabled !== undefined || boundedSettings.paused !== undefined) {
       if (updated.reminderEnabled && !updated.paused) {
         reminder.resume();
       } else {

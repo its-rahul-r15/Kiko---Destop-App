@@ -1,5 +1,5 @@
-appId: com.desktoppet.spiderman
-productName: SpiderManPet
+appId: com.kiko.desktop
+productName: Kiko
 copyright: Copyright © 2026
 
 directories:
@@ -23,13 +23,15 @@ win:
     - target: portable
       arch:
         - x64
-  icon: assets/tray.ico
+  icon: assets/kiko.ico
   asar: true
 
 nsis:
+  installerIcon: assets/kiko.ico
+  uninstallerIcon: assets/kiko.ico
   oneClick: true
   perMachine: false
   allowToChangeInstallationDirectory: false
   createDesktopShortcut: always
   createStartMenuShortcut: true
-  shortcutName: "SpiderMan Pet"
+  shortcutName: "Kiko"

@@ -104,7 +104,7 @@ Kiko-DestopApp/
 │       ├── manifest.json
 │       └── sprite.png
 └── assets/
-    ├── tray.ico                 # System tray icon
+    ├── kiko.ico                 # Kiko system tray and Windows app icon
     └── water.wav                # Audio reminder alert
 ```
 
@@ -196,7 +196,7 @@ graph TD
      - Dev dependencies: `electron` (latest stable), `electron-builder`.
   2. Create `electron-builder.yml` configuring:
      - `appId`: `com.desktop.pet`
-     - `productName`: `SpiderManPet`
+     - `productName`: `Kiko`
      - Targets: `nsis` (oneClick per-user) + `portable`, `x64`
      - `asar: true`, `electronLanguages: ["en-US"]`
      - File inclusions/exclusions.
@@ -321,7 +321,7 @@ graph TD
 
 #### Module 7.1: `src/main/tray.js`
 - **Responsibilities:**
-  - Create Windows system tray icon (`assets/tray.ico`).
+  - Create Windows system tray icon (`assets/kiko.ico`) from `images/marvel.png`.
   - Context menu layout:
     - **Pause / Resume Reminder** (Toggle label)
     - **Interval Submenu:** [15m, 30m, 45m, 60m, 90m, 120m] (Radio items)
@@ -351,7 +351,7 @@ graph TD
 ### Phase 8: Character Assets & Audio Setup
 - **Responsibilities:**
   - Organize the 7 character images from `images/` into their respective `/pets/<id>/` folders with tailored `manifest.json`.
-  - Generate a sharp, clean 32x32 / 256x256 `assets/tray.ico`.
+  - Generate a sharp, clean 32x32 / 256x256 `assets/kiko.ico`.
   - Generate/provide a crisp hydration chime `assets/water.wav`.
 
 ---
