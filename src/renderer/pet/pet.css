@@ -1,0 +1,314 @@
+:root {
+  --scale: 1.0;
+  --speed: 1.0;
+  --anim-duration: calc(2.4s / var(--speed));
+  --font-stack: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font-stack);
+}
+
+#pet-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  position: relative;
+}
+
+#pet-root.pet-at-top {
+  justify-content: flex-start;
+  padding-top: 8px;
+  padding-bottom: 0;
+}
+
+/* ==================== Speech Bubble ==================== */
+#speech-bubble {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%) scale(1);
+  width: 200px;
+  max-width: 92%;
+  background: rgba(18, 22, 34, 0.94);
+  color: #f1f5f9;
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  opacity: 1;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+#speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(18, 22, 34, 0.94);
+}
+
+#speech-bubble.bubble-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-8px) scale(0.92);
+  pointer-events: none;
+}
+
+#bubble-text {
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+/* ==================== Pet Character Container ==================== */
+#pet-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transform-origin: center top;
+  transition: filter 0.3s ease;
+  pointer-events: auto;
+}
+
+#pet-container:active {
+  cursor: grabbing;
+}
+
+#pet-image {
+  display: block;
+  max-width: 140px;
+  max-height: 160px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: scale(var(--scale));
+  transition: transform 0.2s ease;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
+.flipped {
+  transform: scaleX(-1);
+}
+
+.paused {
+  animation-play-state: paused !important;
+}
+
+/* ==================== Custom Character Animations ==================== */
+
+/* 1. Hanging Swing Animation (Spider-Man / Hanging Deadpool) */
+.anim-swing {
+  transform-origin: 50% 0%;
+  animation: swingMotion calc(var(--anim-duration) * 1.2) ease-in-out infinite alternate;
+}
+
+@keyframes swingMotion {
+  0% {
+    transform: rotate(-6deg) translateY(0px);
+  }
+  50% {
+    transform: rotate(0deg) translateY(3px);
+  }
+  100% {
+    transform: rotate(6deg) translateY(0px);
+  }
+}
+
+/* 2. Hover Float Animation (Iron Man) */
+.anim-hover {
+  animation: hoverMotion var(--anim-duration) ease-in-out infinite alternate;
+}
+
+@keyframes hoverMotion {
+  0% {
+    transform: translateY(0px);
+    filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+  }
+  100% {
+    transform: translateY(-8px);
+    filter: drop-shadow(0 14px 18px rgba(0, 200, 255, 0.3));
+  }
+}
+
+/* 3. Spell Pulse Animation (Doctor Strange) */
+.anim-spell {
+  animation: spellMotion calc(var(--anim-duration) * 1.1) ease-in-out infinite alternate;
+}
+
+@keyframes spellMotion {
+  0% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 6px 12px rgba(255, 170, 0, 0.35));
+  }
+  100% {
+    transform: translateY(-4px) scale(1.02);
+    filter: drop-shadow(0 10px 22px rgba(255, 140, 0, 0.65));
+  }
+}
+
+/* 4. Cute Bounce Animation (Deadcho) */
+.anim-bounce {
+  animation: bounceMotion calc(var(--anim-duration) * 0.8) ease-in-out infinite alternate;
+}
+
+@keyframes bounceMotion {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-5px) scaleY(1.03);
+  }
+  100% {
+    transform: translateY(-2px) scaleY(0.98);
+  }
+}
+
+/* 5. Claws Stance Animation (Wolverine) */
+.anim-claws {
+  animation: clawsMotion var(--anim-duration) ease-in-out infinite alternate;
+}
+
+@keyframes clawsMotion {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-4px) rotate(1.5deg);
+  }
+}
+
+/* 6. Playful Attitude Animation (Deadpool Attitude) */
+.anim-attitude {
+  animation: attitudeMotion calc(var(--anim-duration) * 0.9) ease-in-out infinite alternate;
+}
+
+@keyframes attitudeMotion {
+  0% {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  100% {
+    transform: translateY(-3px) rotate(1.5deg);
+  }
+}
+
+/* ==================== State Visual Overrides ==================== */
+
+/* Walking State */
+.state-walking {
+  animation: walkStep 0.4s ease-in-out infinite alternate !important;
+}
+
+@keyframes walkStep {
+  0% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  100% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+/* Reminder State (Attention Pulse) */
+.state-reminder {
+  animation: reminderAlert 0.6s ease-in-out infinite alternate !important;
+}
+
+@keyframes reminderAlert {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(0, 195, 255, 0.6));
+  }
+  100% {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 20px rgba(0, 195, 255, 0.9));
+  }
+}
+
+/* Drinking / Celebration State */
+.state-drinking {
+  animation: cheerState 0.5s ease-in-out 3 alternate !important;
+}
+
+@keyframes cheerState {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-10px) rotate(5deg) scale(1.05);
+  }
+}
+
+/* Sleeping State */
+.state-sleeping {
+  opacity: 0.85;
+  filter: grayscale(20%) brightness(85%);
+  animation: sleepingBreath 3s ease-in-out infinite alternate !important;
+}
+
+@keyframes sleepingBreath {
+  0% {
+    transform: scale(0.98) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(2px);
+  }
+}
+
+/* ==================== Sleep ZZZ Indicators ==================== */
+#sleep-zzz {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  display: flex;
+  gap: 3px;
+  font-family: var(--font-stack);
+  font-weight: 800;
+  color: #60a5fa;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+#sleep-zzz.zzz-hidden {
+  opacity: 0;
+}
+
+.z1, .z2, .z3 {
+  display: inline-block;
+  animation: floatZ 1.8s ease-in-out infinite;
+}
+.z1 { font-size: 13px; animation-delay: 0s; }
+.z2 { font-size: 10px; animation-delay: 0.4s; }
+.z3 { font-size: 8px; animation-delay: 0.8s; }
+
+@keyframes floatZ {
+  0% { opacity: 0; transform: translateY(4px) scale(0.6); }
+  50% { opacity: 1; transform: translateY(-4px) scale(1); }
+  100% { opacity: 0; transform: translateY(-12px) scale(1.2); }
+}

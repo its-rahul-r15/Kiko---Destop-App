@@ -1,0 +1,20 @@
+{
+  "id": "spiderman",
+  "name": "Spider-Man (Upside Down)",
+  "type": "illustration",
+  "animationType": "swing",
+  "frameSize": [140, 200],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-swing" },
+    "walking": { "fps": 8, "animation": "pet-swing-walk" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "🕷️ Hey webslinger! It's been 1 hour. Grab some water 💧",
+    "💧 Stay hydrated to keep those spidey reflexes sharp!",
+    "🕸️ Spider-Sense tingling! Time for a quick water break 🥤",
+    "💧 Even friendly neighborhood heroes need H2O!"
+  ]
+}

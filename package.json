@@ -1,0 +1,24 @@
+{
+  "name": "kiko-desktop-pet",
+  "productName": "Kiko",
+  "version": "1.0.0",
+  "description": "Kiko desktop pet companion for Windows",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "electron",
+    "desktop-pet",
+    "kiko",
+    "companion",
+    "reminder"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^34.3.0",
+    "electron-builder": "^25.1.8"
+  }
+}

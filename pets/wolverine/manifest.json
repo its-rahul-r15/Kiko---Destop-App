@@ -1,0 +1,19 @@
+{
+  "id": "wolverine",
+  "name": "Wolverine (Logan)",
+  "type": "illustration",
+  "animationType": "claws",
+  "frameSize": [140, 160],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-claws" },
+    "walking": { "fps": 8, "animation": "pet-walk-claws" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "🐾 Even mutant healing factors need water, bub! 💧",
+    "💧 Drink your water before I slice your keyboard! 🐾🥤",
+    "🥤 1 hour mark reached! Get hydrated, pal! 💧"
+  ]
+}

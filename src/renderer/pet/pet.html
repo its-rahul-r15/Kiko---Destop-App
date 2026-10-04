@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; style-src 'self' 'unsafe-inline'; media-src 'self' file:;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiko</title>
+  <link rel="stylesheet" href="pet.css">
+</head>
+<body>
+  <div id="pet-root">
+    <!-- Speech Bubble Reminder -->
+    <div id="speech-bubble" class="bubble-hidden">
+      <div id="bubble-text">Hey there! It's time to drink water 💧</div>
+    </div>
+
+    <!-- Character Sprite / Illustration Container -->
+    <div id="pet-container" class="state-idle">
+      <img id="pet-image" alt="Pet Character" draggable="false">
+      <div id="sleep-zzz" class="zzz-hidden">
+        <span class="z1">Z</span>
+        <span class="z2">z</span>
+        <span class="z3">z</span>
+      </div>
+    </div>
+  </div>
+
+  <audio id="reminder-audio" preload="auto"></audio>
+  <script src="pet.js"></script>
+</body>
+</html>

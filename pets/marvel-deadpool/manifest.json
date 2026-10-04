@@ -1,0 +1,19 @@
+{
+  "id": "marvel-deadpool",
+  "name": "Deadpool (Attitude)",
+  "type": "illustration",
+  "animationType": "attitude",
+  "frameSize": [140, 160],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-attitude" },
+    "walking": { "fps": 8, "animation": "pet-walk-swagger" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "⚔️ Hydrate or diedrate, buddy! Drink some H2O! 💧",
+    "🥤 Maximum effort requires maximum hydration! 💧",
+    "🔴 You look thirsty. Don't make me come through the screen! 🥤"
+  ]
+}

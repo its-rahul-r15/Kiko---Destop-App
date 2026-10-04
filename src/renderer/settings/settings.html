@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data:; style-src 'self' 'unsafe-inline';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiko Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <!-- Header -->
+    <header class="settings-header">
+      <div class="header-title">
+        <span class="icon">🕷️</span>
+        <div>
+          <h2>Kiko Settings</h2>
+          <p class="subtitle">Customize Kiko and its reminders</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tabs Header -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="general">General</button>
+      <button class="tab-btn" data-tab="reminder">Reminder</button>
+      <button class="tab-btn" data-tab="appearance">Appearance</button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="tabs-body">
+      <!-- General Tab -->
+      <section id="tab-general" class="tab-panel active">
+        <div class="setting-group">
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Start with Windows</span>
+              <span class="label-desc">Launch companion automatically when PC boots</span>
+            </div>
+            <input type="checkbox" id="startWithWindows" class="toggle-switch">
+          </label>
+
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Always on Top</span>
+              <span class="label-desc">Keep your pet floating above all application windows</span>
+            </div>
+            <input type="checkbox" id="alwaysOnTop" class="toggle-switch">
+          </label>
+
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Walking & Movement</span>
+              <span class="label-desc">Allow character to wander along the bottom of the screen</span>
+            </div>
+            <input type="checkbox" id="movementEnabled" class="toggle-switch">
+          </label>
+        </div>
+      </section>
+
+      <!-- Reminder Tab -->
+      <section id="tab-reminder" class="tab-panel">
+        <div class="setting-group">
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Hydration Reminder</span>
+              <span class="label-desc">Show speech bubble reminder to drink water</span>
+            </div>
+            <input type="checkbox" id="reminderEnabled" class="toggle-switch">
+          </label>
+
+          <div class="form-row">
+            <div class="toggle-info">
+              <span class="label-title">Reminder Interval</span>
+              <span class="label-desc">Time duration between hydration alerts</span>
+            </div>
+            <select id="intervalMinutes" class="select-input">
+              <option value="15">Every 15 Minutes</option>
+              <option value="30">Every 30 Minutes</option>
+              <option value="45">Every 45 Minutes</option>
+              <option value="60">Every 60 Minutes (1 Hour)</option>
+              <option value="90">Every 90 Minutes</option>
+              <option value="120">Every 120 Minutes (2 Hours)</option>
+            </select>
+          </div>
+
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Sound Chime</span>
+              <span class="label-desc">Play soft notification chime on reminder</span>
+            </div>
+            <input type="checkbox" id="sound" class="toggle-switch">
+          </label>
+
+          <label class="toggle-card">
+            <div class="toggle-info">
+              <span class="label-title">Windows Notification</span>
+              <span class="label-desc">Display native Windows popup banner</span>
+            </div>
+            <input type="checkbox" id="notification" class="toggle-switch">
+          </label>
+        </div>
+      </section>
+
+      <!-- Appearance Tab -->
+      <section id="tab-appearance" class="tab-panel">
+        <div class="setting-group">
+          <span class="section-heading">Choose Your Character</span>
+          <div id="pets-grid" class="pets-grid">
+            <!-- Dynamically populated character cards -->
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-header">
+              <span class="label-title">Character Scale</span>
+              <span id="scale-value" class="slider-badge">1.0x</span>
+            </div>
+            <input type="range" id="scale" min="0.7" max="1.5" step="0.05" value="1.0" class="range-slider">
+          </div>
+
+          <div class="slider-control">
+            <div class="slider-header">
+              <span class="label-title">Animation Speed</span>
+              <span id="speed-value" class="slider-badge">1.0x</span>
+            </div>
+            <input type="range" id="animationSpeed" min="0.5" max="2.0" step="0.1" value="1.0" class="range-slider">
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="settings-footer">
+      <div id="save-status" class="save-status">Saved</div>
+      <button id="close-btn" class="btn btn-secondary">Done</button>
+    </footer>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

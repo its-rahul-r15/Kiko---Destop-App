@@ -1,0 +1,19 @@
+{
+  "id": "ironman",
+  "name": "Iron Man (Tony Stark)",
+  "type": "illustration",
+  "animationType": "hover",
+  "frameSize": [140, 160],
+  "states": {
+    "idle": { "fps": 4, "animation": "pet-hover" },
+    "walking": { "fps": 8, "animation": "pet-fly-walk" },
+    "reminder": { "fps": 6, "animation": "pet-alert" },
+    "drinking": { "fps": 5, "animation": "pet-cheer" },
+    "sleeping": { "fps": 2, "animation": "pet-sleep" }
+  },
+  "messages": [
+    "🤖 JARVIS detected your hydration levels are below optimal. Drink water! 💧",
+    "⚡ Genius, billionaire, playboy, philanthropist... and well hydrated! 🥤",
+    "💧 Power up your arc reactor with a fresh glass of water! 🤖"
+  ]
+}

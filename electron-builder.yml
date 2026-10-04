@@ -1,0 +1,35 @@
+appId: com.desktoppet.spiderman
+productName: SpiderManPet
+copyright: Copyright © 2026
+
+directories:
+  output: dist
+  buildResources: assets
+
+files:
+  - "src/**/*"
+  - "pets/**/*"
+  - "assets/**/*"
+  - "package.json"
+
+electronLanguages:
+  - "en-US"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+  icon: assets/tray.ico
+  asar: true
+
+nsis:
+  oneClick: true
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: "SpiderMan Pet"
