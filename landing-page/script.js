@@ -82,6 +82,10 @@
   const previewLabel = document.getElementById('pet-preview-label');
   const petCardsContainer = document.getElementById('pet-cards');
   const osNotes = document.querySelectorAll('.os-note');
+  const updateEmailDialog = document.getElementById('update-email-dialog');
+  const updateEmailForm = document.getElementById('update-email-form');
+  const updateEmailInput = document.getElementById('update-email');
+  const updateEmailStatus = document.getElementById('update-email-status');
 
   /* ---------- OS detection ---------- */
   function detectOS() {
@@ -181,6 +185,64 @@
     } catch (e) { /* ignore */ }
   }
 
+  /* ---------- Download update signup ---------- */
+  function initDownloadEmailSignup() {
+    if (!updateEmailDialog || !updateEmailForm || !updateEmailInput || !updateEmailStatus) return;
+
+    document.querySelectorAll('[data-download-link]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        updateEmailStatus.textContent = '';
+        updateEmailStatus.classList.remove('is-error', 'is-success');
+        updateEmailForm.querySelector('button[type="submit"]').disabled = false;
+        updateEmailDialog.showModal();
+      });
+    });
+
+    function closeDialog() {
+      if (updateEmailDialog.open) updateEmailDialog.close();
+    }
+
+    updateEmailDialog.querySelector('.update-email-close').addEventListener('click', closeDialog);
+    updateEmailDialog.querySelector('.update-email-skip').addEventListener('click', closeDialog);
+    updateEmailDialog.addEventListener('click', function (event) {
+      if (event.target === updateEmailDialog) closeDialog();
+    });
+
+    updateEmailForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      if (!updateEmailInput.value.trim()) {
+        updateEmailStatus.textContent = 'Email is optional. Choose “Not now” to close this window.';
+        updateEmailStatus.classList.remove('is-error', 'is-success');
+        updateEmailInput.focus();
+        return;
+      }
+
+      const submitButton = updateEmailForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true;
+      updateEmailStatus.textContent = 'Saving your email…';
+      updateEmailStatus.classList.remove('is-error', 'is-success');
+
+      try {
+        const response = await fetch(updateEmailForm.action, {
+          method: 'POST',
+          body: new FormData(updateEmailForm),
+          headers: { Accept: 'application/json' }
+        });
+        if (!response.ok) {
+          throw new Error('Formspree returned HTTP ' + response.status);
+        }
+        updateEmailStatus.textContent = 'Thanks! We’ll let you know when Kiko gets an update.';
+        updateEmailStatus.classList.add('is-success');
+        updateEmailForm.reset();
+      } catch (error) {
+        console.error('[Downloads] Could not save update email:', error);
+        updateEmailStatus.textContent = 'Could not save your email right now. Please try again.';
+        updateEmailStatus.classList.add('is-error');
+        submitButton.disabled = false;
+      }
+    });
+  }
+
   /* ---------- Init ---------- */
   function init() {
     restorePetSelection();
@@ -193,6 +255,7 @@
     if (previewLabel) previewLabel.textContent = initialPet.name;
 
     showOSNotes();
+    initDownloadEmailSignup();
   }
 
   if (document.readyState === 'loading') {

@@ -376,11 +376,12 @@ function showBubble(text, duration = 8000) {
 }
 
 function playHydrationSound() {
-  try {
-    reminderAudio.src = '../../assets/water.wav';
-    reminderAudio.volume = 0.6;
-    reminderAudio.play().catch(() => {});
-  } catch (err) {}
+  reminderAudio.src = new URL('../../../assets/water.wav', window.location.href).href;
+  reminderAudio.volume = 0.6;
+  reminderAudio.currentTime = 0;
+  reminderAudio.play().catch((err) => {
+    console.error('[Reminder] Failed to play hydration sound:', err);
+  });
 }
 
 // Character Asset & Animation Applier

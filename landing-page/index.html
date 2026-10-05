@@ -70,7 +70,7 @@
         <a href="#privacy">Privacy</a>
         <a href="#faq">FAQ</a>
       </div>
-      <a href="Kiko-Setup-1.0.0.exe" class="btn btn--primary btn--small nav-cta" download="Kiko-Setup-1.0.0.exe">Download</a>
+      <a href="Kiko-Setup-1.0.0.exe" class="btn btn--primary btn--small nav-cta" data-download-link download="Kiko-Setup-1.0.0.exe">Download</a>
     </nav>
   </header>
 
@@ -85,7 +85,7 @@
           <p class="hero-sub-centered">A tiny character that wanders across your screen, nudges you to take a break, and keeps you company while you work.</p>
 
           <div class="hero-actions-centered">
-            <a href="Kiko-Setup-1.0.0.exe" class="btn btn--primary" id="hero-download-btn" download="Kiko-Setup-1.0.0.exe">
+            <a href="Kiko-Setup-1.0.0.exe" class="btn btn--primary" id="hero-download-btn" data-download-link download="Kiko-Setup-1.0.0.exe">
               <svg class="btn-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <rect x="2" y="3" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M5 15h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -303,7 +303,7 @@
           <div class="download-actions">
             <a href="Kiko-Setup-1.0.0.exe"
                class="btn btn--primary btn--large"
-               id="main-download-btn" download="Kiko-Setup-1.0.0.exe">
+               id="main-download-btn" data-download-link download="Kiko-Setup-1.0.0.exe">
               <svg class="btn-icon" width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <rect x="2" y="3" width="14" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M5 15h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -346,7 +346,7 @@
           </details>
           <details class="glass faq-item">
             <summary>Does it collect any data?</summary>
-            <p>No. There is no telemetry, no analytics, and no account. Your settings stay on your machine.</p>
+            <p>Kiko has no in-app telemetry or analytics, and its settings stay on your machine. If you choose to sign up for release emails, your email address is sent to Formspree for update notifications; signing up is optional.</p>
           </details>
           <details class="glass faq-item">
             <summary>Can I change how often it reminds me?</summary>
@@ -399,6 +399,24 @@
       </div>
     </div>
   </footer>
+
+  <dialog class="update-email-dialog" id="update-email-dialog" aria-labelledby="update-email-title">
+    <div class="update-email-card">
+      <button class="update-email-close" type="button" aria-label="Close email signup">×</button>
+      <p class="update-email-eyebrow">A LITTLE KIKO NEWS</p>
+      <h2 id="update-email-title">Keep Kiko in the loop.</h2>
+      <p class="update-email-copy">Get an email when a new version or update is available. Your download has already started.</p>
+      <form id="update-email-form" action="https://formspree.io/f/xlgvgdnk" method="POST">
+        <label for="update-email">Email address <span>(optional)</span></label>
+        <input id="update-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+        <input type="hidden" name="_subject" value="Kiko version update notifications">
+        <p class="update-email-status" id="update-email-status" role="status" aria-live="polite"></p>
+        <button class="btn btn--primary update-email-submit" type="submit">Notify me about updates</button>
+      </form>
+      <button class="update-email-skip" type="button">Not now, continue without email</button>
+      <p class="update-email-note">Optional—your download does not depend on signing up.</p>
+    </div>
+  </dialog>
 
   <script src="script.js"></script>
 </body>

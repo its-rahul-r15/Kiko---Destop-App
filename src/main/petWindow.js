@@ -5,7 +5,7 @@ const settings = require('./settings');
 const petLoader = require('./petLoader');
 const settingsWindow = require('./settingsWindow');
 
-const BASE_W = 220;
+const BASE_W = 300;
 const BASE_H = 260;
 const MIN_VISIBLE = 60; // px of window that must stay on some display
 
