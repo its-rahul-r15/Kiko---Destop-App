@@ -13,8 +13,11 @@
       <div class="notes-brand">
         <img src="../../../assets/kiko.png" alt="" class="notes-brand-icon">
         <div>
-          <h1>Your notes</h1>
-          <p>Little thoughts, saved on this PC.</p>
+          <div class="notes-title-row">
+            <h1>Your notes</h1>
+            <span id="notes-count" class="notes-count">0 notes</span>
+          </div>
+          <p>A little space for everything on your mind.</p>
         </div>
       </div>
       <div class="notes-actions">
@@ -23,6 +26,14 @@
         <button id="close-window" class="close-button" type="button" aria-label="Close notes">×</button>
       </div>
     </header>
+    <div class="notes-toolbar">
+      <label class="search-box">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="search-notes" type="search" placeholder="Find a note..." aria-label="Search notes">
+        <kbd>Search</kbd>
+      </label>
+      <span class="notes-hint">Private to this PC <span aria-hidden="true">·</span> Auto-saved</span>
+    </div>
     <section id="notes-board" class="notes-board" aria-label="Your sticky notes"></section>
     <template id="note-template">
       <article class="note-card">

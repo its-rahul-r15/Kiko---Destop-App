@@ -3,6 +3,8 @@ const noteTemplate = document.getElementById('note-template');
 const newNoteButton = document.getElementById('new-note');
 const closeWindowButton = document.getElementById('close-window');
 const saveStatus = document.getElementById('save-status');
+const searchInput = document.getElementById('search-notes');
+const notesCount = document.getElementById('notes-count');
 
 const MAX_NOTES = 50;
 let notes = [];
@@ -18,6 +20,7 @@ function setSaveStatus(message, state) {
 function updateNewNoteButton() {
   newNoteButton.disabled = notes.length >= MAX_NOTES;
   newNoteButton.title = newNoteButton.disabled ? 'You have reached the 50-note limit.' : 'Create a note';
+  notesCount.textContent = `${notes.length} ${notes.length === 1 ? 'note' : 'notes'}`;
 }
 
 function scheduleSave() {
@@ -52,27 +55,40 @@ function renderEmptyState() {
   icon.setAttribute('aria-hidden', 'true');
   icon.textContent = '✎';
   const title = document.createElement('h2');
-  title.textContent = 'A clear space for your thoughts.';
+  const hasSearch = Boolean(searchInput.value.trim());
+  title.textContent = hasSearch ? 'No notes found' : 'A clear space for your thoughts.';
   const description = document.createElement('p');
-  description.textContent = 'Jot down a reminder, save an idea, or keep a little note to yourself.';
+  description.textContent = hasSearch
+    ? `Nothing matches “${searchInput.value.trim()}”. Try another search.`
+    : 'Jot down a reminder, save an idea, or keep a little note to yourself.';
   const createButton = document.createElement('button');
   createButton.className = 'new-note-button';
   createButton.type = 'button';
-  createButton.textContent = '＋ Create your first note';
-  createButton.addEventListener('click', createNote);
+  createButton.textContent = hasSearch ? 'Clear search' : '＋ Create your first note';
+  createButton.addEventListener('click', hasSearch
+    ? () => {
+      searchInput.value = '';
+      renderNotes();
+      searchInput.focus();
+    }
+    : createNote);
   empty.append(icon, title, description, createButton);
   notesBoard.appendChild(empty);
 }
 
 function renderNotes(focusNoteId) {
   notesBoard.replaceChildren();
-  if (!notes.length) {
+  const query = searchInput.value.trim().toLocaleLowerCase();
+  const visibleNotes = notes.filter((note) => (
+    `${note.title}\n${note.content}`.toLocaleLowerCase().includes(query)
+  ));
+  if (!visibleNotes.length) {
     renderEmptyState();
     updateNewNoteButton();
     return;
   }
 
-  notes.forEach((note) => {
+  visibleNotes.forEach((note) => {
     const card = noteTemplate.content.firstElementChild.cloneNode(true);
     const titleInput = card.querySelector('.note-title');
     const contentInput = card.querySelector('.note-content');
@@ -115,6 +131,7 @@ function createNote() {
     title: '',
     content: ''
   };
+  searchInput.value = '';
   notes.unshift(note);
   renderNotes(note.id);
   scheduleSave();
@@ -137,6 +154,7 @@ async function initializeNotes() {
 }
 
 newNoteButton.addEventListener('click', createNote);
+searchInput.addEventListener('input', () => renderNotes());
 closeWindowButton.addEventListener('click', () => window.notesApi.closeWindow());
 window.addEventListener('beforeunload', () => {
   if (saveTimeout) clearTimeout(saveTimeout);
