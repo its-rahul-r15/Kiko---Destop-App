@@ -378,6 +378,10 @@ p {
   justify-content: center;
 }
 
+.logo-mark img {
+  object-fit: contain;
+}
+
 .nav-links {
   display: flex;
   gap: var(--space-6);
