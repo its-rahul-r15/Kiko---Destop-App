@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const DEFAULT_SETTINGS = {
+  customReminderMessage: 'Take a little water break — you’ve got this! 💧',
   petId: 'ironman',
   position: { x: 100, y: 500 },
   alwaysOnTop: true,
@@ -10,7 +11,6 @@ const DEFAULT_SETTINGS = {
   startWithWindows: false,
   reminderEnabled: true,
   intervalMinutes: 60,
-  customReminderMessage: '',
   paused: false,
   sound: true,
   notification: false,

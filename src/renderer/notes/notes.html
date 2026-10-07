@@ -40,9 +40,28 @@
         <header class="note-card-header">
           <span class="note-marker" aria-hidden="true"></span>
           <input class="note-title" type="text" maxlength="80" placeholder="Untitled note" aria-label="Note title">
+          <label class="note-size-control">
+            <span class="sr-only">Note size</span>
+            <select class="note-size" aria-label="Note size">
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </label>
           <button class="delete-note" type="button" aria-label="Delete note" title="Delete note">×</button>
         </header>
         <textarea class="note-content" maxlength="5000" placeholder="Type a thought, a reminder, or anything you want to keep..." aria-label="Note"></textarea>
+        <section class="note-todos" aria-label="To-do list">
+          <div class="todo-heading">
+            <span>To-do</span>
+            <span class="todo-progress" aria-live="polite"></span>
+          </div>
+          <form class="todo-form">
+            <input class="todo-input" type="text" maxlength="160" placeholder="Add a task..." aria-label="Add a task">
+            <button class="todo-add" type="submit" aria-label="Add task">＋</button>
+          </form>
+          <ul class="todo-list"></ul>
+        </section>
         <footer class="note-card-footer">Auto-saved on this PC</footer>
       </article>
     </template>

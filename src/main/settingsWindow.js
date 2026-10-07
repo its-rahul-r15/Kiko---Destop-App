@@ -3,7 +3,7 @@ const path = require('path');
 
 let settingsWin = null;
 
-function openSettingsWindow() {
+function openSettingsWindow(options = {}) {
   if (settingsWin && !settingsWin.isDestroyed()) {
     settingsWin.show();
     settingsWin.focus();
@@ -27,7 +27,9 @@ function openSettingsWindow() {
     autoHideMenuBar: true
   });
 
-  settingsWin.loadFile(path.join(__dirname, '../renderer/settings/settings.html'));
+  settingsWin.loadFile(path.join(__dirname, '../renderer/settings/settings.html'), {
+    query: options.showTour ? { tour: '1' } : {}
+  });
 
   settingsWin.once('ready-to-show', () => {
     settingsWin.show();
@@ -47,7 +49,18 @@ function closeSettingsWindow() {
   }
 }
 
+function reportTourInteraction(interaction) {
+  if (!settingsWin || settingsWin.isDestroyed() || !settingsWin.webContents) return;
+  settingsWin.webContents.send('tour-interaction', interaction);
+}
+
+function isSettingsWindowSender(sender) {
+  return Boolean(settingsWin && !settingsWin.isDestroyed() && settingsWin.webContents === sender);
+}
+
 module.exports = {
   openSettingsWindow,
-  closeSettingsWindow
+  closeSettingsWindow,
+  reportTourInteraction,
+  isSettingsWindowSender
 };

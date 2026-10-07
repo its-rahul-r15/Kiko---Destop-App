@@ -46,6 +46,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 92px;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -388,86 +389,6 @@ p {
   object-fit: contain;
   transform-origin: bottom center;
   animation: logo-buddy 3.8s ease-in-out infinite;
-}
-
-.screen-buddy {
-  --buddy-size: clamp(44px, 12vw, 64px);
-  position: fixed;
-  z-index: 90;
-  bottom: max(12px, env(safe-area-inset-bottom));
-  left: 12px;
-  display: block;
-  width: var(--buddy-size);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-}
-
-.screen-buddy.is-ready {
-  transition:
-    left var(--buddy-travel-time, 1.8s) cubic-bezier(0.45, 0, 0.55, 1),
-    top var(--buddy-travel-time, 1.8s) cubic-bezier(0.45, 0, 0.55, 1);
-}
-
-.screen-buddy:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 50%;
-}
-
-.screen-buddy.is-dragging {
-  transition: none;
-  cursor: grabbing;
-}
-
-.screen-buddy-art {
-  display: block;
-  transform-origin: bottom center;
-  pointer-events: none;
-  transition: transform 0.2s ease;
-}
-
-.screen-buddy.is-facing-left .screen-buddy-art {
-  transform: scaleX(-1);
-}
-
-.screen-buddy img {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 5px 7px rgba(35, 40, 60, 0.2));
-  transform-origin: bottom center;
-  animation: screen-buddy-hop 0.72s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes screen-buddy-hop {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  35% { transform: translateY(-5px) rotate(-3deg); }
-  70% { transform: translateY(0) rotate(3deg); }
-}
-
-.screen-buddy.is-jumping img {
-  animation: screen-buddy-jump 0.58s cubic-bezier(0.2, 0.75, 0.35, 1);
-}
-
-.screen-buddy.is-jumping-down img {
-  animation: screen-buddy-jump-down 0.58s cubic-bezier(0.2, 0.75, 0.35, 1);
-}
-
-@keyframes screen-buddy-jump {
-  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
-  38% { transform: translateY(-42px) rotate(-10deg) scale(1.04, 0.96); }
-  72% { transform: translateY(0) rotate(8deg) scale(0.96, 1.04); }
-}
-
-@keyframes screen-buddy-jump-down {
-  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
-  38% { transform: translateY(42px) rotate(10deg) scale(1.04, 0.96); }
-  72% { transform: translateY(0) rotate(-8deg) scale(0.96, 1.04); }
 }
 
 .nav-brand:hover .logo-mark img,
@@ -1226,28 +1147,31 @@ p {
   text-decoration: underline;
 }
 
+/* ---------- SCROLL REVEALS ---------- */
+.has-scroll-reveal .scroll-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 560ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 560ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.has-scroll-reveal .scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* ---------- REDUCED MOTION ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .logo-mark img {
-    animation: none;
-  }
-
-  .screen-buddy.is-ready,
-  .screen-buddy-art,
-  .screen-buddy img {
-    animation: none;
+  .has-scroll-reveal .scroll-reveal {
+    opacity: 1;
+    transform: none;
     transition: none;
   }
 
-  .screen-buddy.is-jumping img {
-    animation: none;
-  }
-
-  .screen-buddy.is-jumping-down img {
+  .logo-mark img {
     animation: none;
   }
 
@@ -1385,6 +1309,7 @@ p {
 /* ---------- PRODUCT-LED LANDING PAGE ---------- */
 .section {
   padding: clamp(72px, 9vw, 120px) 0;
+  scroll-margin-top: 92px;
 }
 
 .hero {
@@ -1447,11 +1372,7 @@ p {
 .hero-title span {
   display: inline-block;
   padding: 0 0.035em 0.08em;
-  background: linear-gradient(115deg, #6479e8 4%, #9b8ce9 38%, #d58ebc 68%, #789bd9 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 5px 12px rgba(103, 119, 220, 0.2));
+  color: #6573c7;
 }
 
 .hero-sub-centered {
@@ -1792,7 +1713,7 @@ p {
   display: flex;
   align-items: center;
   flex-direction: column;
-  animation: mascot-float 3.8s ease-in-out infinite;
+  animation: mascot-float 6s ease-in-out infinite;
 }
 
 .desktop-mascot {
@@ -1813,8 +1734,8 @@ p {
 }
 
 @keyframes mascot-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+  0%, 28%, 66%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-4px); }
 }
 
 .desktop-taskbar {
@@ -1996,7 +1917,7 @@ p {
   max-height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 7px 8px rgba(35, 40, 60, 0.2));
-  animation: mascot-float 3.8s ease-in-out infinite;
+  animation: mascot-float 6s ease-in-out infinite;
 }
 
 .pet-preview-label {
@@ -2057,7 +1978,7 @@ p {
   height: 76px;
   object-fit: contain;
   filter: drop-shadow(0 4px 5px rgba(31, 38, 56, 0.15));
-  animation: mascot-float 3.8s ease-in-out infinite;
+  animation: mascot-float 6s ease-in-out infinite;
 }
 
 .privacy-panel {

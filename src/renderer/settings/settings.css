@@ -482,6 +482,41 @@ body::before {
   backdrop-filter: blur(22px) saturate(160%);
 }
 
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.github-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.github-profile-link:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.github-profile-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.github-status {
+  color: #ff9eac;
+  font-size: 11px;
+}
+
 .save-status {
   display: flex;
   align-items: center;
@@ -578,6 +613,74 @@ body::before {
   overflow-wrap: anywhere;
 }
 
+.reminder-preview-card {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 11px;
+  padding: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 15px;
+  background:
+    radial-gradient(ellipse at 100% 0, rgba(133, 150, 255, 0.16), transparent 58%),
+    rgba(255, 255, 255, 0.045);
+}
+
+.reminder-preview-art {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(111, 139, 255, 0.2), rgba(154, 115, 255, 0.12));
+}
+
+.reminder-preview-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.reminder-preview-content {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.reminder-preview-content > span {
+  color: #9ea7ca;
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.reminder-preview-content > strong {
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+.reminder-preview-bubble {
+  margin: 3px 0;
+  padding: 7px 9px;
+  font-size: 10px;
+}
+
+.reminder-preview-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.reminder-preview-actions span {
+  padding: 4px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #aeb5d0;
+  font-size: 9px;
+}
+
 .btn {
   padding: 9px 24px;
   border: none;
@@ -595,9 +698,230 @@ body::before {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 10px 22px -8px rgba(111, 139, 255, 0.8);
 }
 
+.btn-secondary {
+  flex: none;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+.btn-secondary:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .btn:hover { filter: brightness(1.1); }
 .btn:active { transform: scale(0.97); }
 .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(111, 139, 255, 0.5); }
+
+.first-run-tour[hidden] {
+  display: none;
+}
+
+.first-run-tour {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(5, 7, 16, 0.68);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+  animation: tour-fade-in 0.3s ease both;
+}
+
+.tour-card {
+  width: min(100%, 420px);
+  padding: 27px 30px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(111, 139, 255, 0.2), transparent 52%),
+    linear-gradient(155deg, rgba(34, 38, 61, 0.98), rgba(17, 19, 32, 0.99));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  text-align: center;
+  animation: tour-card-arrive 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.tour-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #aab4e8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.tour-brand img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.tour-visual {
+  display: grid;
+  width: 94px;
+  height: 94px;
+  place-items: center;
+  margin: 22px auto 15px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.2), transparent 38%),
+    linear-gradient(145deg, rgba(111, 139, 255, 0.32), rgba(154, 115, 255, 0.2) 58%, rgba(255, 69, 96, 0.16));
+  box-shadow: 0 16px 32px -18px rgba(111, 139, 255, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-size: 42px;
+  animation: tour-visual-float 2.8s ease-in-out infinite;
+}
+
+.tour-step-count {
+  color: #929bbd;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.tour-card h1 {
+  margin-top: 8px;
+  color: #f2f3ff;
+  font-size: 25px;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+}
+
+.tour-card > p {
+  min-height: 44px;
+  max-width: 34ch;
+  margin: 9px auto 0;
+  color: #a5aac0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tour-hint {
+  display: block;
+  min-height: 16px;
+  margin-top: 8px;
+  color: #aeb9ff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tour-progress {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 21px;
+}
+
+.tour-progress span {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.tour-progress span.active {
+  width: 22px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.tour-progress span.complete {
+  background: rgba(111, 139, 255, 0.62);
+}
+
+.tour-actions,
+.tour-step-actions {
+  display: flex;
+  align-items: center;
+}
+
+.tour-actions {
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 23px;
+}
+
+.tour-step-actions {
+  gap: 8px;
+}
+
+.tour-skip,
+.tour-back,
+.tour-next {
+  min-height: 38px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease, opacity 0.16s ease;
+}
+
+.tour-skip,
+.tour-back {
+  background: rgba(255, 255, 255, 0.055);
+  color: #b2b6c9;
+}
+
+.tour-skip:hover,
+.tour-back:not(:disabled):hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tour-back:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.tour-next {
+  min-width: 86px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 8px 20px -10px rgba(111, 139, 255, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.tour-next:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.tour-next:disabled {
+  opacity: 0.58;
+  cursor: wait;
+  filter: saturate(0.6);
+}
+
+.tour-skip:focus-visible,
+.tour-back:focus-visible,
+.tour-next:focus-visible {
+  outline: 2px solid rgba(173, 185, 255, 0.85);
+  outline-offset: 3px;
+}
+
+@keyframes tour-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes tour-card-arrive {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes tour-visual-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }

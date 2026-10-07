@@ -116,6 +116,7 @@ function createPetWindow() {
   petWin.webContents.on('context-menu', (event) => {
     event.preventDefault();
     if (!alive()) return;
+    settingsWindow.reportTourInteraction('right-click');
 
     Menu.buildFromTemplate([
       {
@@ -145,6 +146,10 @@ function createPetWindow() {
 
 function getPetWindow() {
   return petWin;
+}
+
+function isPetWindowSender(sender) {
+  return Boolean(alive() && petWin.webContents === sender);
 }
 
 function sendCurrentPetToRenderer() {
@@ -236,6 +241,7 @@ function hidePet() {
 module.exports = {
   createPetWindow,
   getPetWindow,
+  isPetWindowSender,
   sendCurrentPetToRenderer,
   moveTo,
   updateWindowPositionDelta,

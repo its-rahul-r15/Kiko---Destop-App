@@ -4,6 +4,9 @@ const settings = require('./settings');
 const petLoader = require('./petLoader');
 const petWindow = require('./petWindow');
 
+const SNOOZE_DELAY_MS = 10 * 60 * 1000;
+const DEFAULT_REMINDER_MESSAGE = 'Take a little water break — you’ve got this! 💧';
+
 let reminderTimer = null;
 let nextDueTimestamp = null;
 let pausedRemainingMs = null;
@@ -39,14 +42,10 @@ function triggerReminder() {
   }
 
   const pet = petLoader.getPetById(currentSettings.petId);
-  const messages = (pet && pet.manifest && pet.manifest.messages && pet.manifest.messages.length > 0)
-    ? pet.manifest.messages
-    : ["💧 It's time to drink some water! Stay hydrated! 💧"];
-
   const customMessage = typeof currentSettings.customReminderMessage === 'string'
     ? currentSettings.customReminderMessage.trim()
     : '';
-  const reminderMessage = customMessage || messages[Math.floor(Math.random() * messages.length)];
+  const reminderMessage = customMessage || DEFAULT_REMINDER_MESSAGE;
 
   // 1. Send IPC to Pet Renderer
   const win = petWindow.getPetWindow();
@@ -103,6 +102,11 @@ function resetInterval() {
   scheduleNextReminder();
 }
 
+function snooze() {
+  pausedRemainingMs = null;
+  scheduleNextReminder(SNOOZE_DELAY_MS);
+}
+
 function initPowerMonitor() {
   powerMonitor.on('resume', () => {
     const currentSettings = settings.get();
@@ -125,5 +129,6 @@ module.exports = {
   pause,
   resume,
   resetInterval,
+  snooze,
   initPowerMonitor
 };

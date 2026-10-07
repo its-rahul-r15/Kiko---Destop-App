@@ -43,7 +43,7 @@ if (!gotTheLock) {
 
     // 5. Initialize the system tray and show onboarding on a fresh install.
     tray.createTray();
-    if (isFirstRun) settingsWindow.openSettingsWindow();
+    if (isFirstRun) settingsWindow.openSettingsWindow({ showTour: true });
 
     // 6. Schedule hydration reminders & power monitor listeners
     reminder.scheduleNextReminder();

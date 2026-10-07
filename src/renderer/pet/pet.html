@@ -9,9 +9,27 @@
 </head>
 <body>
   <div id="pet-root">
-    <!-- Speech Bubble Reminder -->
-    <div id="speech-bubble" class="bubble-hidden">
-      <div id="bubble-text">Hey there! It's time to drink water 💧</div>
+    <div id="speech-bubble" class="bubble-hidden" role="status" aria-live="polite">
+      <div class="reminder-poster-heading">
+        <div class="reminder-pet-art">
+          <img id="reminder-pet-image" alt="">
+        </div>
+        <div class="reminder-poster-title">
+          <span class="reminder-eyebrow">A LITTLE RESET</span>
+          <strong>Water break</strong>
+          <span class="reminder-subtitle">Your buddy is cheering you on</span>
+        </div>
+        <button id="dismiss-reminder" class="dismiss-reminder" type="button" aria-label="Dismiss reminder">×</button>
+      </div>
+      <div id="bubble-text">It's time to drink some water. 💧</div>
+      <div class="reminder-poster-footer">
+        <span aria-hidden="true">💧</span>
+        <span>A sip now, a brighter rest of your day.</span>
+      </div>
+      <div class="reminder-poster-actions">
+        <button id="snooze-reminder" type="button">Snooze 10 min</button>
+        <button id="done-reminder" type="button">Done</button>
+      </div>
     </div>
 
     <span id="spider-web" aria-hidden="true"></span>

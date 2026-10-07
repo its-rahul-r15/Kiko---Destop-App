@@ -42,6 +42,10 @@ const petRoot = document.getElementById('pet-root');
 const petImage = document.getElementById('pet-image');
 const speechBubble = document.getElementById('speech-bubble');
 const bubbleText = document.getElementById('bubble-text');
+const reminderPetImage = document.getElementById('reminder-pet-image');
+const dismissReminderButton = document.getElementById('dismiss-reminder');
+const snoozeReminderButton = document.getElementById('snooze-reminder');
+const doneReminderButton = document.getElementById('done-reminder');
 const sleepZzz = document.getElementById('sleep-zzz');
 const reminderAudio = document.getElementById('reminder-audio');
 const pomodoroBadge = document.getElementById('pomodoro-badge');
@@ -69,6 +73,28 @@ function bindHitTesting() {
     e.preventDefault();
     reactToClick();
   });
+
+  dismissReminderButton.addEventListener('click', finishReminder);
+  doneReminderButton.addEventListener('click', finishReminder);
+  snoozeReminderButton.addEventListener('click', () => {
+    if (window.pet && window.pet.snoozeReminder) {
+      window.pet.snoozeReminder();
+    }
+    finishReminder();
+  });
+}
+
+function reportTourInteraction(interaction) {
+  if (window.pet && window.pet.reportTourInteraction) {
+    window.pet.reportTourInteraction(interaction);
+  }
+}
+
+function finishReminder() {
+  hideBubble();
+  if (currentState === States.REMINDER) {
+    setState(States.IDLE);
+  }
 }
 
 function reactToClick() {
@@ -243,15 +269,18 @@ function bindDragHandling() {
       if (!dragMoved) {
         const now = Date.now();
         if (lastPetClickAt && now - lastPetClickAt <= 500) {
+          reportTourInteraction('double-click');
           openNotes();
           if (window.pet && window.pet.setIgnoreMouse) {
             window.pet.setIgnoreMouse(true);
           }
         } else {
+          reportTourInteraction('click');
           lastPetClickAt = now;
           queueClickReaction();
         }
       } else {
+        reportTourInteraction('drag');
         lastPetClickAt = 0;
         if (window.pet && window.pet.setIgnoreMouse) {
           window.pet.setIgnoreMouse(true);
@@ -296,7 +325,8 @@ function setState(newState, payload = {}) {
 
     case States.REMINDER:
       petContainer.classList.add('state-reminder');
-      showBubble(payload.message || "💧 Time to drink water!");
+      petRoot.classList.add('reminder-visible');
+      showBubble(payload.message || "💧 Time to drink water!", 12000);
       if (payload.sound) {
         playHydrationSound();
       }
@@ -369,10 +399,16 @@ function showBubble(text, duration = 8000) {
   bubbleText.textContent = text;
   speechBubble.classList.remove('bubble-hidden');
 
-  // Auto-hide after 8 seconds
-  bubbleTimer = setTimeout(() => {
-    speechBubble.classList.add('bubble-hidden');
-  }, duration);
+  bubbleTimer = setTimeout(hideBubble, duration);
+}
+
+function hideBubble() {
+  if (bubbleTimer) {
+    clearTimeout(bubbleTimer);
+    bubbleTimer = null;
+  }
+  speechBubble.classList.add('bubble-hidden');
+  petRoot.classList.remove('reminder-visible');
 }
 
 function playHydrationSound() {
@@ -394,6 +430,8 @@ function applyPetData(petData) {
 
   if (imageUrl) {
     petImage.src = imageUrl;
+    reminderPetImage.src = imageUrl;
+    reminderPetImage.alt = `${manifest.name} is here to remind you to take a water break`;
   }
 
   if (manifest.id === 'spiderman') {

@@ -36,6 +36,13 @@ contextBridge.exposeInMainWorld('pet', {
     ipcRenderer.on('pomodoro-update', handler);
     return () => ipcRenderer.removeListener('pomodoro-update', handler);
   },
+  onTourInteraction: (callback) => {
+    const handler = (event, interaction) => callback(interaction);
+    ipcRenderer.on('tour-interaction', handler);
+    return () => ipcRenderer.removeListener('tour-interaction', handler);
+  },
+  reportTourInteraction: (interaction) => ipcRenderer.send('pet-tour-interaction', interaction),
+  snoozeReminder: () => ipcRenderer.send('snooze-reminder'),
   startWalk: (direction) => ipcRenderer.send('walk-start', { direction }),
   stopWalk: () => ipcRenderer.send('walk-stop'),
   sendDragDelta: (dx, dy) => ipcRenderer.send('drag-delta', { dx, dy }),

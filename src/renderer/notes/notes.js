@@ -80,7 +80,8 @@ function renderNotes(focusNoteId) {
   notesBoard.replaceChildren();
   const query = searchInput.value.trim().toLocaleLowerCase();
   const visibleNotes = notes.filter((note) => (
-    `${note.title}\n${note.content}`.toLocaleLowerCase().includes(query)
+    `${note.title}\n${note.content}\n${(note.todos || []).map((todo) => todo.text).join('\n')}`
+      .toLocaleLowerCase().includes(query)
   ));
   if (!visibleNotes.length) {
     renderEmptyState();
@@ -92,8 +93,19 @@ function renderNotes(focusNoteId) {
     const card = noteTemplate.content.firstElementChild.cloneNode(true);
     const titleInput = card.querySelector('.note-title');
     const contentInput = card.querySelector('.note-content');
+    const sizeSelect = card.querySelector('.note-size');
+    const todoForm = card.querySelector('.todo-form');
+    const todoInput = card.querySelector('.todo-input');
+    const todoList = card.querySelector('.todo-list');
+    const todoProgress = card.querySelector('.todo-progress');
+
+    note.size = ['small', 'medium', 'large'].includes(note.size) ? note.size : 'medium';
+    note.todos = Array.isArray(note.todos) ? note.todos : [];
+    card.classList.add(`note-card--${note.size}`);
     titleInput.value = note.title;
     contentInput.value = note.content;
+    sizeSelect.value = note.size;
+
     titleInput.addEventListener('input', () => {
       note.title = titleInput.value;
       scheduleSave();
@@ -102,6 +114,74 @@ function renderNotes(focusNoteId) {
       note.content = contentInput.value;
       scheduleSave();
     });
+    sizeSelect.addEventListener('change', () => {
+      note.size = sizeSelect.value;
+      card.classList.remove('note-card--small', 'note-card--medium', 'note-card--large');
+      card.classList.add(`note-card--${note.size}`);
+      scheduleSave();
+    });
+
+    function renderTodos() {
+      todoList.replaceChildren();
+      const completedCount = note.todos.filter((todo) => todo.completed).length;
+      todoProgress.textContent = `${completedCount}/${note.todos.length}`;
+      todoList.classList.toggle('todo-list--empty', note.todos.length === 0);
+
+      note.todos.forEach((todo) => {
+        const item = document.createElement('li');
+        item.className = 'todo-item';
+        item.classList.toggle('todo-item--completed', todo.completed);
+        const checkbox = document.createElement('input');
+        checkbox.className = 'todo-checkbox';
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.completed;
+        checkbox.setAttribute('aria-label', `Mark "${todo.text}" ${todo.completed ? 'incomplete' : 'complete'}`);
+        checkbox.addEventListener('change', () => {
+          todo.completed = checkbox.checked;
+          renderTodos();
+          scheduleSave();
+        });
+        const text = document.createElement('span');
+        text.className = 'todo-text';
+        text.textContent = todo.text;
+        const removeButton = document.createElement('button');
+        removeButton.className = 'todo-remove';
+        removeButton.type = 'button';
+        removeButton.textContent = '×';
+        removeButton.setAttribute('aria-label', `Remove task "${todo.text}"`);
+        removeButton.addEventListener('click', () => {
+          note.todos = note.todos.filter((itemTodo) => itemTodo.id !== todo.id);
+          renderTodos();
+          scheduleSave();
+        });
+        item.append(checkbox, text, removeButton);
+        todoList.appendChild(item);
+      });
+    }
+
+    todoForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const text = todoInput.value.trim();
+      if (!text) {
+        todoInput.focus();
+        return;
+      }
+      if (note.todos.length >= 100) {
+        setSaveStatus('A note can have up to 100 tasks.', 'error');
+        return;
+      }
+      note.todos.push({
+        id: window.crypto.randomUUID(),
+        text,
+        completed: false
+      });
+      todoInput.value = '';
+      renderTodos();
+      scheduleSave();
+      todoInput.focus();
+    });
+
+    renderTodos();
     card.querySelector('.delete-note').addEventListener('click', () => {
       notes = notes.filter((item) => item.id !== note.id);
       renderNotes();
@@ -129,7 +209,9 @@ function createNote() {
   const note = {
     id: window.crypto.randomUUID(),
     title: '',
-    content: ''
+    content: '',
+    size: 'medium',
+    todos: []
   };
   searchInput.value = '';
   notes.unshift(note);

@@ -1,4 +1,4 @@
-const { ipcMain, app } = require('electron');
+const { ipcMain, app, shell } = require('electron');
 const { pathToFileURL } = require('url');
 const settings = require('./settings');
 const petLoader = require('./petLoader');
@@ -30,8 +30,33 @@ function validateNotes(value) {
     if (typeof note.content !== 'string' || note.content.length > 5000) {
       throw new Error('Note text must be 5,000 characters or fewer.');
     }
+    const size = note.size === undefined ? 'medium' : note.size;
+    if (!['small', 'medium', 'large'].includes(size)) {
+      throw new Error('Note size must be small, medium, or large.');
+    }
+    const todos = note.todos === undefined ? [] : note.todos;
+    if (!Array.isArray(todos) || todos.length > 100) {
+      throw new Error('Each note can contain up to 100 tasks.');
+    }
+    const todoIds = new Set();
+    const validatedTodos = todos.map((todo) => {
+      if (!todo || typeof todo !== 'object' || Array.isArray(todo)
+        || typeof todo.id !== 'string' || !/^[\w-]{1,64}$/.test(todo.id) || todoIds.has(todo.id)
+        || typeof todo.text !== 'string' || todo.text.trim().length === 0 || todo.text.length > 160
+        || typeof todo.completed !== 'boolean') {
+        throw new Error('Each task must have a unique ID, text, and completion state.');
+      }
+      todoIds.add(todo.id);
+      return { id: todo.id, text: todo.text, completed: todo.completed };
+    });
     ids.add(note.id);
-    return { id: note.id, title: note.title, content: note.content };
+    return {
+      id: note.id,
+      title: note.title,
+      content: note.content,
+      size,
+      todos: validatedTodos
+    };
   });
 }
 
@@ -74,6 +99,22 @@ function registerIpcHandlers() {
     notesWindow.openNotesWindow();
   });
 
+  ipcMain.on('snooze-reminder', (event) => {
+    if (!petWindow.isPetWindowSender(event.sender)) {
+      console.error('[IPC] Ignored a snooze request from an untrusted window.');
+      return;
+    }
+    reminder.snooze();
+  });
+
+  ipcMain.on('pet-tour-interaction', (event, interaction) => {
+    if (!petWindow.isPetWindowSender(event.sender)
+      || !['click', 'double-click', 'drag'].includes(interaction)) {
+      return;
+    }
+    settingsWindow.reportTourInteraction(interaction);
+  });
+
   ipcMain.handle('get-pet-initial-state', () => {
     const currentSettings = settings.get();
     const pet = petLoader.getPetById(currentSettings.petId);
@@ -89,6 +130,22 @@ function registerIpcHandlers() {
   // Settings UI Handlers
   ipcMain.handle('get-settings', () => {
     return settings.get();
+  });
+
+  ipcMain.handle('clear-app-cache', async (event) => {
+    if (!settingsWindow.isSettingsWindowSender(event.sender)) {
+      throw new Error('Only the Settings window can clear the app cache.');
+    }
+    await event.sender.session.clearCache();
+    return { success: true };
+  });
+
+  ipcMain.handle('open-github-profile', async (event) => {
+    if (!settingsWindow.isSettingsWindowSender(event.sender)) {
+      throw new Error('Only the Settings window can open the GitHub profile.');
+    }
+    await shell.openExternal('https://github.com/its-rahul-r15');
+    return { success: true };
   });
 
   ipcMain.handle('get-pets-list', () => {
